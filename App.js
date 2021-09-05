@@ -1,14 +1,13 @@
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { FilterContext } from './contexts/FilterContext';
-
 import Main from './screens/Main';
 import Filters from './screens/Filters';
 import Favorites from './screens/Favorites';
-import { Client } from "@petfinder/petfinder-js";
+import UserSettings from './screens/UserSettings';
 
+import { Client } from "@petfinder/petfinder-js";
 const Stack = createNativeStackNavigator();
 
 // const key = 'p7rNFI2gUIoYHCWJMUUA5BAOoirnSfP30Dpny8c4ajQDtHPkyV';
@@ -27,6 +26,8 @@ export default function App() {
   const [location, setLocation] = useState(90023);
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('');
+  const [breed, setBreed] = useState('');
+  const [darkModeOn, setDarkModeOn] = useState(false);
 
   const fetchAnimals = () => {
     client.animal.search({
@@ -34,7 +35,8 @@ export default function App() {
       limit: '100',
       location: location,
       age: age,
-      gender: gender
+      gender: gender,
+      breed: breed
     })
       .then((response) => {
           const res = response.data.animals;
@@ -57,7 +59,9 @@ export default function App() {
     <FilterContext.Provider value={{
     fetchAnimals, results, animalType, location, age,
      gender, setAnimalType, setLocation, setAge,
-      setGender, favorites, setFavorites, currIndex, setCurrIndex}}>
+      setGender, favorites, setFavorites, currIndex, 
+      setCurrIndex, breed, setBreed,
+      darkModeOn, setDarkModeOn}}>
 
       <NavigationContainer>
         <Stack.Navigator initialRouteName='Main' screenOptions={{
@@ -66,6 +70,7 @@ export default function App() {
           <Stack.Screen name='Main' component={Main}/>
           <Stack.Screen name='Filters' component={Filters} />
           <Stack.Screen name='Favorites' component={Favorites} />
+          <Stack.Screen name='UserSettings' component={UserSettings} />
         </Stack.Navigator>
       </NavigationContainer>
 
@@ -73,14 +78,7 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
 
 
 

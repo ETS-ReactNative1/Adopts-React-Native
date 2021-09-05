@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { RectButton } from 'react-native-gesture-handler';
 import Swipes from './Swipes';
 
-export default function SwipeAction({results, currIndex, handleLike}) {
+export default function SwipeAction({results, currIndex, handleLike, handlePass}) {
+
+    const [willLike, setWillLike] = useState(false);
+    const [willPass, setWillPass] = useState(false);
 
     const renderLeftActions = () => {
         return (
@@ -29,9 +32,18 @@ export default function SwipeAction({results, currIndex, handleLike}) {
            rightThreshold={40}
            renderLeftActions={renderLeftActions}
            renderRightActions={renderRightActions}
-           onSwipeableLeftOpen={handleLike}
+           onSwipeableLeftOpen={() => {
+               setWillLike(false)
+               handleLike(results[currIndex].id)
+           }}
+           onSwipeableRightOpen={() => {
+               setWillPass(false)
+               handlePass()
+           }}
+           onSwipeableLeftWillOpen={() => setWillLike(true)}
+           onSwipeableRightWillOpen={() => setWillPass(true)}
         >
-           <Swipes results={results[currIndex]}/>
+           <Swipes results={results[currIndex]} willLike={willLike} willPass={willPass}/>
         </Swipeable>
     )
 }

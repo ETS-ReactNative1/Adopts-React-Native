@@ -1,11 +1,13 @@
 import React, { useContext } from 'react';
 import { Text } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
 import { StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
+import { FontAwesome } from '@expo/vector-icons';
 import { FilterContext } from '../contexts/FilterContext';
+
 
 
 
@@ -19,21 +21,21 @@ export default function AltTopBar() {
         <SafeAreaView style={darkModeOn ? styles.darkMode : styles.container}>
 
 
-            <Text style={{marginLeft: 0, marginTop: 10, marginBottom: 5, fontWeight: 'bold', fontSize: 18, color: darkModeOn ? 'white' : 'gray'}}> <Feather name='settings' size={20} color='rgba(38, 64, 179, 0.842)' / >  Search Settings</Text>
+            <Text style={{marginLeft: 0, marginTop: 10, marginBottom: 5, fontWeight: 'bold', fontSize: 18, color: darkModeOn ? 'white' : 'gray'}}> <FontAwesome name='heart' size={20} color='#ef32d9b2' / >  Favorites</Text>
 
             <TouchableOpacity onPress={() => navigation.navigate('Main')}>
                 <Ionicons name="home-outline" size={35} color="#c471ed"  style={{opacity: 0}}/>
         
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => navigation.navigate('Favorites')} style={{marginLeft: 50}}>
-                <Feather name="heart" size={30} color="#ef32d9b2" />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('Main')}>
-                <Ionicons name="home-outline" size={32} color="#c471ed" style={{marginLeft: 0}} />
-        
+            
+            <TouchableOpacity onPress={() => navigation.navigate('Filters')} style={{marginLeft: 100}}>
+                <Feather name="settings" size={30} color={darkModeOn ? 'dodgerblue' : 'rgba(38, 64, 179, 0.842)'} />
             </TouchableOpacity>
             
+            <TouchableOpacity onPress={() => navigation.navigate('Main')}>
+                <Ionicons name="home-outline" size={32} color="#c471ed" style={{marginLeft: 0}} />
+            </TouchableOpacity>
         </SafeAreaView>
     )
 }

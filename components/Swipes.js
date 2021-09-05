@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Image, StyleSheet, Text } from 'react-native'
 
-export default function Swipes({ results }) {
+export default function Swipes({ results, willLike, willPass }) {
 
     const nameFilter = (name) => {
         var str = name;
@@ -20,7 +20,19 @@ export default function Swipes({ results }) {
         <View style={styles.container}>
            
             <Image source={{uri: results.photos[0].full}} style={styles.photo}/>
+            {willLike && (
+                <View style={styles.likeBox}>
+                    <Text style={{color: '#64EDCC'}}>LIKED!</Text>
+                </View>
+            )}
 
+            {willPass && (
+                <View style={styles.passBox}>
+                    <Text style={{color: 'red'}}>NEXT</Text>
+                </View>
+            )}
+
+            
             
             <Text style={[styles.name, styles.textShadow]}>{nameFilter(results.name)}</Text>
             {/* <Text style={styles.age}>Age: {results.age}</Text> */}
@@ -35,10 +47,32 @@ export default function Swipes({ results }) {
     )
 }
 
+const boxStyle = {
+    position: 'absolute',
+    top: '50%',
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
+    borderWidth: 3,
+    borderRadius: 10,
+}
+
 
 const styles = StyleSheet.create({
+
     container: {
         height: '95%',
+    },
+    likeBox: {
+        ...boxStyle,
+        left: '50%',
+        borderColor: '#64EDCC'
+    },
+    passBox: {
+        ...boxStyle,
+        left: '50%',
+        borderColor: 'red'
     },
     photo: {
         height: '80%',
@@ -48,7 +82,7 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 0,
         borderColor: '#5c5c5c',
         borderWidth: 2,
-        marginTop: 30,
+        marginTop: 20,
     },
     name: {
         color: 'white',
