@@ -1,34 +1,10 @@
-import React, { useContext, useEffect } from "react";
-import { View, Text, StyleSheet, TextInput } from "react-native";
-import AltTopBar from "../components/AltTopBar";
-import { useNavigation } from "@react-navigation/core";
-import { FilterContext } from "../contexts/FilterContext";
+import React, { useContext } from "react";
+import { View, StyleSheet } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import Button from "react-native-button";
+import { FilterContext } from "../contexts/FilterContext";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 
-export default function Filters() {
-  const {
-    fetchAnimals,
-    setAnimalType,
-    setLocation,
-    setAge,
-    animalType,
-    age,
-    gender,
-    setGender,
-    breed,
-    setBreed,
-    darkModeOn,
-  } = useContext(FilterContext);
-
-  const navigation = useNavigation();
-
-  const handleSubmit = () => {
-    fetchAnimals();
-    navigation.navigate("Main");
-  };
-
+const Breeds = () => {
   const dogBreeds = () => {
     return (
       <View>
@@ -634,176 +610,19 @@ export default function Filters() {
   };
 
   return (
-    <View style={darkModeOn ? styles.darkMode : styles.container}>
-      <AltTopBar />
-      <Text
-        style={{
-          fontWeight: "bold",
-          marginTop: 25,
-          marginLeft: 20,
-          fontSize: 16,
-          color: "gray",
-          opacity: 0,
-        }}
-      >
-        Search Filters
-      </Text>
-      <View style={styles.form}>
-        <Text
-          style={darkModeOn ? styles.darkModeAnimalType : styles.animalText}
-        >
-          Animal Type
-        </Text>
-        <Picker
-          selectedValue={animalType}
-          onValueChange={(current) => setAnimalType(current)}
-          style={darkModeOn ? styles.darkModePickerText : styles.pickerText}
-        >
-          <Picker.Item label="All" value="" />
-          <Picker.Item label="Dogs" value="Dog" />
-          <Picker.Item label="Cats" value="Cat" />
-          <Picker.Item label="Rabbits" value="Rabbit" />
-          <Picker.Item label="Birds" value="Bird" />
-        </Picker>
-
-        <Text style={darkModeOn ? styles.darkModeAgeText : styles.ageText}>
-          Age
-        </Text>
-        <Picker
-          selectedValue={age}
-          onValueChange={(currentAge) => setAge(currentAge)}
-          style={darkModeOn ? styles.darkModePickerText : styles.pickerText}
-        >
-          <Picker.Item label="Any" value="" />
-          <Picker.Item label="Adult" value="Adult" />
-          <Picker.Item label="Young" value="Baby" />
-        </Picker>
-
-        <Text
-          style={darkModeOn ? styles.darkModeGenderText : styles.genderText}
-        >
-          Gender
-        </Text>
-        <Picker
-          selectedValue={gender}
-          onValueChange={(currentGender) => setGender(currentGender)}
-          style={darkModeOn ? styles.darkModePickerText : styles.pickerText}
-        >
-          <Picker.Item label="Any" value="" />
-          <Picker.Item label="Male" value="Male" />
-          <Picker.Item label="Female" value="Female" />
-        </Picker>
-
-        <Text style={darkModeOn ? styles.darkModeBreedText : styles.breedText}>
-          Breed
-        </Text>
-        {animalType == "Dog" || animalType == ""
-          ? dogBreeds()
-          : animalType == "Cat"
-          ? catBreeds()
-          : animalType == "Rabbit"
-          ? rabbitBreeds()
-          : ""}
-
-        <Text
-          style={{
-            marginTop: 0,
-            marginLeft: 5,
-            marginBottom: 10,
-            fontSize: 16,
-            fontWeight: "bold",
-            color: darkModeOn ? "lightskyblue" : "dodgerblue",
-          }}
-        >
-          Search Breed
-        </Text>
-
-        <TextInput
-          style={darkModeOn ? styles.darkModeInput : styles.input}
-          name="breed"
-          onChangeText={(text) => setBreed(text)}
-          placeholder="Breed"
-          placeholderTextColor={darkModeOn ? "white" : "black"}
-        />
-
-        <Text
-          style={{
-            marginLeft: 5,
-            marginBottom: 10,
-            fontSize: 16,
-            fontWeight: "bold",
-            color: darkModeOn ? "lightskyblue" : "dodgerblue",
-          }}
-        >
-          Location
-        </Text>
-
-        <TextInput
-          style={darkModeOn ? styles.darkModeInput : styles.input}
-          name="location"
-          onChangeText={(text) => setLocation(text)}
-          placeholder="Zip Code"
-          placeholderTextColor={darkModeOn ? "white" : "black"}
-        />
-
-        <View style={{ marginVertical: 15 }}>
-          <Button
-            title="Save"
-            onPress={handleSubmit}
-            style={{ fontSize: 20, color: "white" }}
-            containerStyle={{
-              padding: 10,
-              height: 50,
-              borderRadius: 15,
-              overflow: "hidden",
-              backgroundColor: darkModeOn
-                ? "lightskyblue"
-                : "rgba(38, 64, 179, 0.842)",
-            }}
-          >
-            {" "}
-            Save
-          </Button>
-        </View>
-      </View>
-    </View>
+    <>
+      {dogBreeds()}
+      {catBreeds()}
+      {rabbitBreeds()}
+    </>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: getStatusBarHeight(),
-    backgroundColor: "white",
-  },
   darkMode: {
     flex: 1,
     marginTop: getStatusBarHeight(),
     backgroundColor: "#000",
-  },
-  form: {
-    flex: 1,
-    marginTop: -20,
-    padding: 20,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "rgba(38, 64, 179, 0.842)",
-    marginBottom: 20,
-    borderRadius: 10,
-    padding: 7,
-    borderBottomLeftRadius: 0,
-    borderTopRightRadius: 0,
-  },
-  darkModeInput: {
-    borderWidth: 1,
-    borderColor: "lightskyblue",
-    marginBottom: 20,
-    borderRadius: 10,
-    padding: 7,
-    borderBottomLeftRadius: 0,
-    borderTopRightRadius: 0,
-    color: "white",
   },
   pickerText: {
     marginBottom: 30,
@@ -818,7 +637,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontSize: 16,
     fontWeight: "bold",
-    color: "lightskyblue",
+    color: "dodgerblue",
   },
   animalText: {
     marginLeft: 7,
@@ -841,17 +660,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontSize: 16,
     fontWeight: "bold",
-    color: "lightskyblue",
+    color: "#ef32d9b2",
     paddingTop: 8,
-  },
-  text: {
-    borderTopWidth: 1,
-    borderTopColor: "white",
-    marginLeft: 7,
-    marginBottom: 10,
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "rgba(38, 64, 179, 0.842)",
   },
   darkModeGenderText: {
     borderTopWidth: 1,
@@ -860,7 +670,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontSize: 16,
     fontWeight: "bold",
-    color: "lightskyblue",
+    color: "#c471ed",
     paddingTop: 8,
   },
   genderText: {
