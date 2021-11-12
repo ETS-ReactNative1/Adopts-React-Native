@@ -1,15 +1,15 @@
 import React, { useContext } from "react";
 import { Text } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
-import { StyleSheet, TouchableOpacity, SafeAreaView } from "react-native";
+import { StyleSheet, TouchableOpacity, SafeAreaView, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { getStatusBarHeight } from "react-native-status-bar-height";
 import { Feather } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import { getStatusBarHeight } from "react-native-status-bar-height";
 import { FilterContext } from "../contexts/FilterContext";
 
 export default function AltTopBar() {
   const { darkModeOn, onboarding } = useContext(FilterContext);
+
   const navigation = useNavigation();
 
   const falseLightOnboarding = {
@@ -18,7 +18,7 @@ export default function AltTopBar() {
     justifyContent: "space-between",
     alignItems: "center",
     padding: 15,
-    marginTop: getStatusBarHeight(),
+    marginTop: 0,
     backgroundColor: "white",
     shadowColor: "#000",
     shadowOffset: {
@@ -88,7 +88,7 @@ export default function AltTopBar() {
     elevation: 9,
   };
   return (
-    <SafeAreaView style={darkModeOn ? styles.darkMode : styles.container}>
+    <View style={darkModeOn ? styles.darkMode : styles.container}>
       <Text
         style={{
           marginLeft: 0,
@@ -101,11 +101,11 @@ export default function AltTopBar() {
       >
         {" "}
         <Feather
-          name="settings"
+          name="user"
           size={20}
-          color={darkModeOn ? "lightskyblue" : "dodgerblue"}
+          color={darkModeOn ? "lightskyblue" : "rgba(38, 64, 179, 0.842)"}
         />{" "}
-        Search Filters
+        User Settings
       </Text>
 
       <TouchableOpacity onPress={() => navigation.navigate("Main")}>
@@ -119,7 +119,7 @@ export default function AltTopBar() {
 
       <TouchableOpacity
         onPress={() => navigation.navigate("Favorites")}
-        style={{ marginLeft: 90 }}
+        style={{ marginLeft: 70 }}
       >
         <Feather
           name="heart"
@@ -127,15 +127,28 @@ export default function AltTopBar() {
           color={darkModeOn ? "#ff0dbf" : "#ef32d9b2"}
         />
       </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Filters")}
+        style={{ paddingLeft: 15 }}
+      >
+        <Feather
+          name="settings"
+          size={30}
+          color={darkModeOn ? "lightskyblue" : "rgba(38, 64, 179, 0.842)"}
+          style={{ bottom: 0 }}
+        />
+      </TouchableOpacity>
+
       <TouchableOpacity onPress={() => navigation.navigate("Main")}>
         <Ionicons
           name="home-outline"
           size={32}
           color="#c471ed"
-          style={{ marginLeft: 0 }}
+          style={{ paddingLeft: 15 }}
         />
       </TouchableOpacity>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -167,6 +180,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#000",
     borderBottomColor: "white",
     borderBottomWidth: 0.5,
+    borderTopColor: "white",
+    borderTopWidth: 0.5,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

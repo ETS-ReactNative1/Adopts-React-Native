@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import { Text } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
 import { StyleSheet, TouchableOpacity, SafeAreaView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { getStatusBarHeight } from "react-native-status-bar-height";
 import { Feather } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import { getStatusBarHeight } from "react-native-status-bar-height";
+import { FontAwesome } from "@expo/vector-icons";
 import { FilterContext } from "../contexts/FilterContext";
 
 export default function AltTopBar() {
@@ -87,6 +87,7 @@ export default function AltTopBar() {
     shadowRadius: 5.46,
     elevation: 9,
   };
+
   return (
     <SafeAreaView style={darkModeOn ? styles.darkMode : styles.container}>
       <Text
@@ -100,33 +101,29 @@ export default function AltTopBar() {
         }}
       >
         {" "}
-        <Feather
-          name="settings"
-          size={20}
-          color={darkModeOn ? "lightskyblue" : "dodgerblue"}
-        />{" "}
-        Search Filters
+        <FontAwesome name="heart" size={20} color="#ef32d9b2" /> Favorites
       </Text>
 
       <TouchableOpacity onPress={() => navigation.navigate("Main")}>
         <Ionicons
           name="home-outline"
           size={35}
-          color={darkModeOn ? "#c32aff" : "#c471ed"}
+          color="#c471ed"
           style={{ opacity: 0 }}
         />
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate("Favorites")}
-        style={{ marginLeft: 90 }}
+        onPress={() => navigation.navigate("Filters")}
+        style={{ marginLeft: 125 }}
       >
         <Feather
-          name="heart"
+          name="settings"
           size={30}
-          color={darkModeOn ? "#ff0dbf" : "#ef32d9b2"}
+          color={darkModeOn ? "lightskyblue" : "rgba(38, 64, 179, 0.842)"}
         />
       </TouchableOpacity>
+
       <TouchableOpacity onPress={() => navigation.navigate("Main")}>
         <Ionicons
           name="home-outline"
