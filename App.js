@@ -9,6 +9,8 @@ import Favorites from "./screens/Favorites";
 import UserSettings from "./screens/UserSettings";
 import SplashScreen from "./screens/Splash";
 import { Client } from "@petfinder/petfinder-js";
+import SetPreferences from "./screens/SetPreferences";
+import Onboarding from "./screens/Onboarding";
 
 const Stack = createNativeStackNavigator();
 
@@ -21,7 +23,9 @@ const client = new Client({ apiKey: key, secret: secret });
 
 export default function App() {
   const [loading, setLoading] = useState(true);
+  const [initialLoad, setInitialLoad] = useState(null);
   const [firstLoad, setFirstLoad] = useState(true);
+  const [onboarding, setOnboarding] = useState(null);
   const [updateSettings, setUpdateSettings] = useState(false);
   const [results, setResults] = useState([]);
   const [favorites, setFavorites] = useState([]);
@@ -33,7 +37,7 @@ export default function App() {
   const [gender, setGender] = useState("");
   const [breed, setBreed] = useState("");
   const [savedAnimalType, setSavedAnimalType] = useState("");
-  const [savedLocation, setSavedLocation] = useState(90023);
+  const [savedLocation, setSavedLocation] = useState(null);
   const [savedAge, setSavedAge] = useState("");
   const [savedGender, setSavedGender] = useState("");
   const [savedBreed, setSavedBreed] = useState("");
@@ -41,6 +45,9 @@ export default function App() {
 
   useEffect(() => {
     if (firstLoad === true || updateSettings === true) {
+      removeBreed();
+      removeAnimalType();
+    } else {
       loadAnimalType();
       loadAge();
       loadLocation();
@@ -73,6 +80,7 @@ export default function App() {
         setLoading(true);
         setResults(filtered);
         setFirstLoad(false);
+        setInitialLoad(false);
       })
       .catch(function (error) {
         console.log(error);
@@ -105,14 +113,6 @@ export default function App() {
       .catch(function (error) {
         console.log(error);
       });
-  };
-
-  const saveLocation = async () => {
-    try {
-      await AsyncStorage.setItem("Location", location.toString());
-    } catch (err) {
-      alert(err);
-    }
   };
 
   const loadLocation = async () => {
@@ -236,6 +236,34 @@ export default function App() {
     }
   };
 
+  const saveOnboarding = async () => {
+    try {
+      let value = onboarding === false ? "true" : "false";
+      await AsyncStorage.setItem("Onboarding", value);
+    } catch (err) {
+      alert(err);
+    }
+  };
+
+  const loadOnboarding = async () => {
+    try {
+      let onboard = await AsyncStorage.getItem("Onboarding");
+      let value = onboard === "false" ? false : true;
+      console.log("on", false);
+      setOnboarding(value);
+    } catch (err) {
+      alert(err);
+    }
+  };
+
+  const saveLocation = async () => {
+    try {
+      await AsyncStorage.setItem("Location", location.toString());
+    } catch (err) {
+      alert(err);
+    }
+  };
+
   const saveDarkMode = () => {
     let value = darkModeOn ? "false" : "true";
     AsyncStorage.setItem("DarkMode", value);
@@ -339,16 +367,24 @@ export default function App() {
         fetchSavedAnimals,
         updateSettings,
         setUpdateSettings,
+        initialLoad,
+        setInitialLoad,
+        onboarding,
+        setOnboarding,
+        saveOnboarding,
+        loadOnboarding,
       }}
     >
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Splash"
+          initialRouteName="Onboarding"
           screenOptions={{
             headerShown: false,
           }}
         >
           <Stack.Screen name="Splash" component={SplashScreen} />
+          <Stack.Screen name="Onboarding" component={Onboarding} />
+          <Stack.Screen name="Preferences" component={SetPreferences} />
           <Stack.Screen name="Main" component={Main} />
           <Stack.Screen name="Filters" component={Filters} />
           <Stack.Screen name="Favorites" component={Favorites} />

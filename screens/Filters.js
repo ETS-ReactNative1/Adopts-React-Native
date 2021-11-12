@@ -22,6 +22,13 @@ export default function Filters() {
     darkModeOn,
   } = useContext(FilterContext);
 
+  useEffect(() => {
+    setAnimalType("");
+    setAge("");
+    setBreed("");
+    setGender("");
+  }, []);
+
   const navigation = useNavigation();
 
   const handleSubmit = () => {
@@ -773,13 +780,13 @@ export default function Filters() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: getStatusBarHeight(),
+    marginTop: 0,
     backgroundColor: "white",
   },
   darkMode: {
     flex: 1,
-    marginTop: getStatusBarHeight(),
-    backgroundColor: "#000",
+    marginTop: 0,
+    backgroundColor: "#121212",
   },
   form: {
     flex: 1,

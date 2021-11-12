@@ -3,11 +3,85 @@ import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { FilterContext } from "../contexts/FilterContext";
+import { getStatusBarHeight } from "react-native-status-bar-height";
 
 export default function TopBar() {
   const navigation = useNavigation();
 
-  const { darkModeOn } = useContext(FilterContext);
+  const { darkModeOn, onboarding } = useContext(FilterContext);
+
+  const falseLightOnboarding = {
+    height: 75,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 15,
+    backgroundColor: "white",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.12,
+    shadowRadius: 5.46,
+    elevation: 9,
+  };
+
+  const trueLightOnboarding = {
+    height: 75,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 15,
+    marginTop: 0,
+    backgroundColor: "white",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.12,
+    shadowRadius: 5.46,
+    elevation: 9,
+  };
+
+  const falseDarkOnboarding = {
+    height: 75,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 15,
+    backgroundColor: "#000",
+    borderBottomColor: "white",
+    borderBottomWidth: 0.5,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.12,
+    shadowRadius: 5.46,
+    elevation: 9,
+  };
+
+  const trueDarkOnboarding = {
+    height: 75,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 15,
+    backgroundColor: "#000",
+    borderBottomColor: "white",
+    borderBottomWidth: 0.5,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.12,
+    shadowRadius: 5.46,
+    elevation: 9,
+  };
   return (
     <View style={darkModeOn ? styles.darkMode : styles.container}>
       <TouchableOpacity>
@@ -62,6 +136,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     padding: 15,
+    marginTop: getStatusBarHeight(),
     backgroundColor: "white",
     shadowColor: "#000",
     shadowOffset: {
@@ -78,6 +153,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     padding: 15,
+    marginTop: getStatusBarHeight(),
     backgroundColor: "#000",
     borderBottomColor: "white",
     borderBottomWidth: 0.5,

@@ -54,7 +54,11 @@ export default function Favorites() {
             <Text
               style={
                 fav.gender === "Male"
-                  ? styles.textPrimary
+                  ? darkModeOn
+                    ? styles.darkModeTextPrimary
+                    : styles.textPrimary
+                  : darkModeOn
+                  ? styles.darkModeTextSecondary
                   : styles.textSecondary
               }
             >
@@ -114,13 +118,13 @@ export default function Favorites() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: getStatusBarHeight(),
+    marginTop: 0,
     backgroundColor: "white",
   },
   darkMode: {
     flex: 1,
-    marginTop: getStatusBarHeight(),
-    backgroundColor: "#000",
+    marginTop: 0,
+    backgroundColor: "#121212",
   },
   animal: {
     margin: 8,
@@ -135,10 +139,10 @@ const styles = StyleSheet.create({
   darkModeAnimal: {
     margin: 8,
     borderWidth: 0.7,
-    borderColor: "white",
+    borderColor: "#1F1B24",
     borderRadius: 25,
     padding: 0,
-    backgroundColor: "rgba(46, 46, 46, 0.733)",
+    backgroundColor: "#1F1B24",
     borderBottomLeftRadius: 0,
     borderTopRightRadius: 0,
     height: 120,
@@ -162,9 +166,25 @@ const styles = StyleSheet.create({
     bottom: 75,
     left: 23,
   },
+  darkModeTextPrimary: {
+    fontWeight: "bold",
+    color: "white",
+    fontSize: 20,
+    textAlign: "center",
+    bottom: 75,
+    left: 23,
+  },
   textSecondary: {
     fontWeight: "bold",
     color: "gray",
+    fontSize: 20,
+    textAlign: "center",
+    bottom: 70,
+    left: 23,
+  },
+  darkModeTextSecondary: {
+    fontWeight: "bold",
+    color: "white",
     fontSize: 20,
     textAlign: "center",
     bottom: 70,
@@ -231,7 +251,7 @@ const styles = StyleSheet.create({
     padding: 0,
     borderBottomLeftRadius: 0,
     borderTopRightRadius: 0,
-    borderColor: "white",
+    borderColor: "#1F1B24",
     borderWidth: 0.7,
     justifyContent: "center",
     alignItems: "center",

@@ -7,7 +7,6 @@ import { FilterContext } from "../contexts/FilterContext";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import Spinner from "react-native-loading-spinner-overlay";
 import { Feather, FontAwesome5 } from "@expo/vector-icons";
-
 export default function Main() {
   const {
     results,
@@ -38,6 +37,12 @@ export default function Main() {
     fetchSavedAnimals,
     updateSettings,
     setUpdateSettings,
+    initialLoad,
+    setInitialLoad,
+    onboarding,
+    setOnboarding,
+    saveOnboarding,
+    loadOnboarding,
   } = useContext(FilterContext);
 
   useEffect(() => {
@@ -45,20 +50,24 @@ export default function Main() {
       fetchSavedAnimals();
       loadDarkMode();
       loadFavorites();
+      loadLocation();
     }
     setUpdateSettings(false);
     console.log(animalType, breed, location, age, gender, firstLoad);
+    console.log("Onboarding", onboarding);
+    console.log("initalLoad", initialLoad);
   }, []);
 
   setTimeout(() => {
     setLoading(false);
-  }, 3200);
+  }, 3500);
 
   function handleLike(id) {
     console.log("like");
     if (!favorites.includes(id)) {
       saveFavorites([...favorites, results[currIndex]]);
       setFavorites([...favorites, results[currIndex]]);
+      setOnboarding(false);
     } else {
       alert(`You've already liked this animal`);
     }
@@ -161,13 +170,12 @@ export default function Main() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: getStatusBarHeight(),
     backgroundColor: "white",
   },
   darkMode: {
     flex: 1,
-    marginTop: getStatusBarHeight(),
-    backgroundColor: "black",
+    marginTop: 0,
+    backgroundColor: "#121212",
   },
   swipes: {
     flex: 1,

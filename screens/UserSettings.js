@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import {
   SafeAreaView,
+  KeyboardAvoidingView,
   Text,
   Switch,
   StyleSheet,
@@ -800,13 +801,13 @@ export default function UserSettings() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: getStatusBarHeight(),
+    marginTop: 0,
     backgroundColor: "white",
   },
   darkMode: {
     flex: 1,
-    marginTop: getStatusBarHeight(),
-    backgroundColor: "#000",
+    marginTop: 0,
+    backgroundColor: "#121212",
   },
   text: {
     color: "black",
@@ -841,7 +842,7 @@ const styles = StyleSheet.create({
   },
   darkModeInput: {
     width: 330,
-    marginLeft: 10,
+    marginLeft: 5,
     borderWidth: 1,
     borderColor: "lightskyblue",
     marginBottom: 20,
@@ -853,7 +854,7 @@ const styles = StyleSheet.create({
   },
   darkModeAnimalType: {
     marginTop: 20,
-    marginLeft: 15,
+    marginLeft: 5,
     marginBottom: 10,
     paddingTop: 5,
     top: 30,
@@ -865,7 +866,7 @@ const styles = StyleSheet.create({
   },
   darkModeAnimalTypeTop: {
     marginTop: 20,
-    marginLeft: 15,
+    marginLeft: 5,
     marginBottom: 10,
     top: 30,
     fontSize: 16,
