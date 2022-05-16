@@ -1,21 +1,136 @@
-import React, { useContext } from "react";
+import React, { useContext, memo } from "react";
 import {
-  SafeAreaView,
-  KeyboardAvoidingView,
   Text,
   Switch,
   StyleSheet,
   View,
   TextInput,
+  Keyboard,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import Button from "react-native-button";
 import { Picker } from "@react-native-picker/picker";
 import UserBar from "../components/UserBar";
 import { FilterContext } from "../contexts/FilterContext";
 import { useNavigation } from "@react-navigation/core";
-import { getStatusBarHeight } from "react-native-status-bar-height";
 
-export default function UserSettings() {
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: 0,
+    backgroundColor: "white",
+  },
+  darkMode: {
+    flex: 1,
+    marginTop: 0,
+    backgroundColor: "#121212",
+  },
+  text: {
+    color: "#006994",
+    top: 40,
+    marginLeft: 15,
+    fontWeight: "900",
+    fontSize: 18,
+    fontFamily: "Futura",
+  },
+  darkModeText: {
+    color: "#006994",
+    top: 40,
+    marginLeft: 15,
+    fontWeight: "900",
+    fontSize: 18,
+    fontFamily: "Futura",
+  },
+  locationText: {
+    borderTopWidth: 1,
+    borderTopColor: "white",
+    marginLeft: 10,
+    fontWeight: "bold",
+    fontFamily: "Futura",
+  },
+  input: {
+    width: 330,
+    height: 40,
+    borderWidth: 1,
+    marginLeft: 10,
+    borderColor: "#006994",
+    marginBottom: 20,
+    borderRadius: 10,
+    padding: 7,
+    borderBottomLeftRadius: 0,
+    borderTopRightRadius: 0,
+    fontFamily: "Futura",
+  },
+  darkModeInput: {
+    width: 330,
+    height: 40,
+    marginLeft: 5,
+    borderWidth: 1,
+    borderColor: "#006994",
+    marginBottom: 20,
+    borderRadius: 10,
+    padding: 7,
+    borderBottomLeftRadius: 0,
+    borderTopRightRadius: 0,
+    color: "white",
+    fontFamily: "Futura",
+  },
+  darkModeAnimalType: {
+    marginTop: 20,
+    marginLeft: 5,
+    marginBottom: 10,
+    paddingTop: 5,
+    top: 30,
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#006994",
+    borderTopWidth: 1,
+    borderTopColor: "white",
+    fontFamily: "Futura",
+  },
+  darkModeAnimalTypeTop: {
+    marginTop: 20,
+    marginLeft: 5,
+    marginBottom: 10,
+    top: 30,
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#006994",
+    fontFamily: "Futura",
+  },
+  animalText: {
+    marginTop: 50,
+    marginLeft: 10,
+    marginBottom: 10,
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#006994",
+    fontFamily: "Futura",
+  },
+  pickerText: {
+    marginTop: 5,
+    marginBottom: -30,
+    marginLeft: 3,
+    color: "#000",
+  },
+  darkModePickerText: {
+    top: 30,
+    marginLeft: 8,
+    marginBottom: 0,
+    color: "white",
+    borderBottomColor: "white",
+    borderBottomWidth: 1,
+  },
+  form: {
+    flex: 1,
+    marginTop: -20,
+    padding: 20,
+  },
+});
+
+function UserSettings() {
   const {
     darkModeOn,
     setDarkModeOn,
@@ -77,6 +192,14 @@ export default function UserSettings() {
           selectedValue={savedBreed}
           onValueChange={(currentBreed) => setSavedBreed(currentBreed)}
           style={darkModeOn ? styles.darkModePickerText : styles.pickerText}
+          itemStyle={{
+            backgroundColor: "transparent",
+            color: "#006994",
+            fontSize: 17,
+            fontFamily: "Futura",
+            width: 280,
+            alignSelf: "center",
+          }}
         >
           <Picker.Item label="Any" value="" />
           <Picker.Item label="Affenpinscher" value="Affenpinscher" />
@@ -554,6 +677,14 @@ export default function UserSettings() {
           selectedValue={savedBreed}
           onValueChange={(currBreed) => setSavedBreed(currBreed)}
           style={darkModeOn ? styles.darkModePickerText : styles.pickerText}
+          itemStyle={{
+            backgroundColor: "transparent",
+            color: "#006994",
+            fontSize: 17,
+            fontFamily: "Futura",
+            width: 250,
+            alignSelf: "center",
+          }}
         >
           <Picker.Item label="Any" value="" />
           <Picker.Item label="American" value="American" />
@@ -565,9 +696,6 @@ export default function UserSettings() {
           <Picker.Item label="Britannia Petite" value="Britannia Petite" />
           <Picker.Item label="Bunny Rabbit" value="Bunny Rabbit" />
           <Picker.Item label="Californian" value="Californian" />
-          <Picker.Item label="Any" value="" />
-          <Picker.Item label="Any" value="" />
-          <Picker.Item label="Any" value="" />
         </Picker>
       </View>
     );
@@ -580,6 +708,14 @@ export default function UserSettings() {
           selectedValue={savedBreed}
           onValueChange={(currentBreed) => setSavedBreed(currentBreed)}
           style={darkModeOn ? styles.darkModePickerText : styles.pickerText}
+          itemStyle={{
+            backgroundColor: "transparent",
+            color: "#006994",
+            fontSize: 17,
+            fontFamily: "Futura",
+            width: 250,
+            alignSelf: "center",
+          }}
         >
           <Picker.Item label="Any" value="" />
           <Picker.Item label="Abyssinian" value="Abyssinian" />
@@ -675,229 +811,170 @@ export default function UserSettings() {
   };
 
   return (
-    <View style={darkModeOn ? styles.darkMode : styles.container}>
+    <View
+      style={darkModeOn ? styles.darkMode : styles.container}
+      onTouchStart={Keyboard.dismiss}
+    >
       <UserBar />
-      <View style={styles.form}>
-        <Text style={darkModeOn ? styles.darkModeText : styles.text}>
-          {darkModeOn ? "Disable Dark Mode" : "Enable Dark Mode"}
-        </Text>
-        <Switch
-          trackColor={{ false: "#767577", true: "#81b0ff" }}
-          thumbColor={darkModeOn ? "dodgerblue" : "#f4f3f4"}
-          ios_backgroundColor="#3e3e3e"
-          onValueChange={toggleSwitch}
-          value={darkModeOn}
-          style={{ top: 15, right: 0 }}
-        />
+      <ScrollView>
+        <View style={styles.form}>
+          <Text style={darkModeOn ? styles.darkModeText : styles.text}>
+            {darkModeOn ? "Disable Dark Mode" : "Enable Dark Mode"}
+          </Text>
+          <Switch
+            trackColor={{ false: "#767577", true: "white" }}
+            thumbColor={darkModeOn ? "#006994" : "#f4f3f4 "}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={toggleSwitch}
+            value={darkModeOn}
+            style={{ top: 15, alignSelf: "flex-end" }}
+          />
 
-        <Text
-          style={darkModeOn ? styles.darkModeAnimalTypeTop : styles.animalText}
-        >
-          Set default animal type
-        </Text>
-        <Picker
-          selectedValue={savedAnimalType}
-          onValueChange={(current) => setSavedAnimalType(current)}
-          style={darkModeOn ? styles.darkModePickerText : styles.pickerText}
-        >
-          <Picker.Item label="All" value="" />
-          <Picker.Item label="Dogs" value="Dog" />
-          <Picker.Item label="Cats" value="Cat" />
-          <Picker.Item label="Rabbits" value="Rabbit" />
-          <Picker.Item label="Birds" value="Bird" />
-        </Picker>
-
-        <Text
-          style={darkModeOn ? styles.darkModeAnimalType : styles.animalText}
-        >
-          Set default gender
-        </Text>
-        <Picker
-          selectedValue={savedGender}
-          onValueChange={(currentGender) => setSavedGender(currentGender)}
-          style={darkModeOn ? styles.darkModePickerText : styles.pickerText}
-        >
-          <Picker.Item label="Any" value="" />
-          <Picker.Item label="Male" value="Male" />
-          <Picker.Item label="Female" value="Female" />
-        </Picker>
-
-        <Text
-          style={darkModeOn ? styles.darkModeAnimalType : styles.animalText}
-        >
-          Set default age
-        </Text>
-        <Picker
-          selectedValue={savedAge}
-          onValueChange={(currentAge) => setSavedAge(currentAge)}
-          style={darkModeOn ? styles.darkModePickerText : styles.pickerText}
-        >
-          <Picker.Item label="Any" value="" />
-          <Picker.Item label="Adult" value="Adult" />
-          <Picker.Item label="Young" value="Baby" />
-        </Picker>
-
-        <Text
-          style={darkModeOn ? styles.darkModeAnimalType : styles.animalText}
-        >
-          Set default breed
-        </Text>
-        {animalType == "Dog" || animalType == ""
-          ? dogBreeds()
-          : animalType == "Cat"
-          ? catBreeds()
-          : animalType == "Rabbit"
-          ? rabbitBreeds()
-          : ""}
-
-        <Text
-          style={{
-            marginTop: 40,
-            marginLeft: 10,
-            marginBottom: 10,
-            paddingTop: 20,
-            fontSize: 16,
-            fontWeight: "bold",
-            color: darkModeOn ? "lightskyblue" : "dodgerblue",
-            borderTopWidth: 1,
-            borderTopColor: "white",
-          }}
-        >
-          Set default location
-        </Text>
-
-        <TextInput
-          style={darkModeOn ? styles.darkModeInput : styles.input}
-          name="location"
-          onChangeText={(text) => setLocation(text)}
-          placeholder="Zip Code"
-          placeholderTextColor={darkModeOn ? "white" : "black"}
-        />
-
-        <View style={{ marginVertical: 40 }}>
-          <Button
-            title="Save"
-            onPress={handleSubmit}
-            style={{ fontSize: 20, color: "white" }}
-            containerStyle={{
-              padding: 10,
-              height: 50,
-              borderRadius: 15,
-              overflow: "hidden",
-              backgroundColor: darkModeOn
-                ? "lightskyblue"
-                : "rgba(38, 64, 179, 0.842)",
+          <Text
+            style={
+              darkModeOn ? styles.darkModeAnimalTypeTop : styles.animalText
+            }
+          >
+            Animal type
+          </Text>
+          <Picker
+            selectedValue={savedAnimalType}
+            onValueChange={(current) => setSavedAnimalType(current)}
+            style={darkModeOn ? styles.darkModePickerText : styles.pickerText}
+            itemStyle={{
+              backgroundColor: "transparent",
+              color: "#006994",
+              fontSize: 17,
+              fontFamily: "Futura",
+              width: 250,
+              alignSelf: "center",
             }}
           >
-            {" "}
-            Save
-          </Button>
+            <Picker.Item label="All" value="" />
+            <Picker.Item label="Dogs" value="Dog" />
+            <Picker.Item label="Cats" value="Cat" />
+            <Picker.Item label="Rabbits" value="Rabbit" />
+            <Picker.Item label="Birds" value="Bird" />
+          </Picker>
+
+          <Text
+            style={darkModeOn ? styles.darkModeAnimalType : styles.animalText}
+          >
+            Gender
+          </Text>
+          <Picker
+            selectedValue={savedGender}
+            onValueChange={(currentGender) => setSavedGender(currentGender)}
+            style={darkModeOn ? styles.darkModePickerText : styles.pickerText}
+            itemStyle={{
+              color: "#006994",
+              fontSize: 17,
+              fontFamily: "Futura",
+              width: 250,
+              alignSelf: "center",
+            }}
+          >
+            <Picker.Item label="Any" value="" />
+            <Picker.Item label="Male" value="Male" />
+            <Picker.Item label="Female" value="Female" />
+          </Picker>
+
+          <Text
+            style={darkModeOn ? styles.darkModeAnimalType : styles.animalText}
+          >
+            Age
+          </Text>
+          <Picker
+            selectedValue={savedAge}
+            onValueChange={(currentAge) => setSavedAge(currentAge)}
+            style={darkModeOn ? styles.darkModePickerText : styles.pickerText}
+            itemStyle={{
+              backgroundColor: "transparent",
+              color: "#006994",
+              fontSize: 17,
+              fontFamily: "Futura",
+              width: 250,
+              alignSelf: "center",
+            }}
+          >
+            <Picker.Item label="Any" value="" />
+            <Picker.Item label="Adult" value="Adult" />
+            <Picker.Item label="Young" value="Baby" />
+          </Picker>
+
+          <Text
+            style={darkModeOn ? styles.darkModeAnimalType : styles.animalText}
+          >
+            Breed
+          </Text>
+          {savedAnimalType === "Dog" ? (
+            dogBreeds()
+          ) : savedAnimalType === "Cat" ? (
+            catBreeds()
+          ) : savedAnimalType == "Rabbit" ? (
+            rabbitBreeds()
+          ) : (
+            <Text
+              style={{
+                color: darkModeOn ? "white" : "#006994",
+                left: darkModeOn ? 5 : 8,
+                top: darkModeOn ? 25 : 0,
+              }}
+            >
+              No breeds available
+            </Text>
+          )}
+          <KeyboardAvoidingView
+            behavior={Platform === "Ios" ? "padding" : "height"}
+          >
+            <View>
+              <Text
+                style={{
+                  marginTop: 40,
+                  marginLeft: 10,
+                  marginBottom: 10,
+                  paddingTop: 20,
+                  fontSize: 16,
+                  fontWeight: "bold",
+                  color: darkModeOn ? "#006994" : "#006994",
+                  borderTopWidth: 1,
+                  borderTopColor: "white",
+                }}
+              >
+                Location
+              </Text>
+
+              <TextInput
+                style={darkModeOn ? styles.darkModeInput : styles.input}
+                name="location"
+                onChangeText={(text) => setLocation(text)}
+                placeholder="Zip Code"
+                placeholderTextColor={darkModeOn ? "white" : "#006994"}
+              />
+
+              <View style={{ marginVertical: 40 }}>
+                <Button
+                  title="Save"
+                  onPress={handleSubmit}
+                  style={{ fontSize: 20, color: "white", fontFamily: "Futura" }}
+                  containerStyle={{
+                    padding: 10,
+                    height: 50,
+                    borderRadius: 15,
+                    overflow: "hidden",
+                    backgroundColor: darkModeOn ? "#006994" : "#006994",
+                  }}
+                >
+                  {" "}
+                  Save
+                </Button>
+              </View>
+            </View>
+          </KeyboardAvoidingView>
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: 0,
-    backgroundColor: "white",
-  },
-  darkMode: {
-    flex: 1,
-    marginTop: 0,
-    backgroundColor: "#121212",
-  },
-  text: {
-    color: "black",
-    top: 40,
-    marginLeft: 15,
-    fontWeight: "900",
-    fontSize: 18,
-  },
-  darkModeText: {
-    color: "white",
-    top: 40,
-    marginLeft: 15,
-    fontWeight: "900",
-    fontSize: 18,
-  },
-  locationText: {
-    borderTopWidth: 1,
-    borderTopColor: "white",
-    marginLeft: 10,
-    fontWeight: "bold",
-  },
-  input: {
-    width: 330,
-    borderWidth: 1,
-    marginLeft: 10,
-    borderColor: "rgba(38, 64, 179, 0.842)",
-    marginBottom: 20,
-    borderRadius: 10,
-    padding: 7,
-    borderBottomLeftRadius: 0,
-    borderTopRightRadius: 0,
-  },
-  darkModeInput: {
-    width: 330,
-    marginLeft: 5,
-    borderWidth: 1,
-    borderColor: "lightskyblue",
-    marginBottom: 20,
-    borderRadius: 10,
-    padding: 7,
-    borderBottomLeftRadius: 0,
-    borderTopRightRadius: 0,
-    color: "white",
-  },
-  darkModeAnimalType: {
-    marginTop: 20,
-    marginLeft: 5,
-    marginBottom: 10,
-    paddingTop: 5,
-    top: 30,
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "lightskyblue",
-    borderTopWidth: 1,
-    borderTopColor: "white",
-  },
-  darkModeAnimalTypeTop: {
-    marginTop: 20,
-    marginLeft: 5,
-    marginBottom: 10,
-    top: 30,
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "lightskyblue",
-  },
-  animalText: {
-    marginTop: 50,
-    marginLeft: 10,
-    marginBottom: 10,
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "dodgerblue",
-  },
-  pickerText: {
-    marginTop: 5,
-    marginBottom: -30,
-    marginLeft: 3,
-    color: "#000",
-  },
-  darkModePickerText: {
-    top: 30,
-    marginLeft: 8,
-    marginBottom: 0,
-    color: "white",
-    borderBottomColor: "white",
-    borderBottomWidth: 1,
-  },
-  form: {
-    flex: 1,
-    marginTop: -20,
-    padding: 20,
-  },
-});
+export default memo(UserSettings);

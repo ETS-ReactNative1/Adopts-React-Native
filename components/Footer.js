@@ -18,10 +18,10 @@ const Footer = ({
     <View
       style={{
         flexDirection: "row",
-        justifyContent: leftButtonLabel ? "space-between" : "flex-end",
+        justifyContent: leftButtonLabel ? "space-between" : "center",
         height: HEIGHT,
         backgroundColor,
-        opacity: 0.7,
+        opacity: 1,
         alignItems: "center",
         paddingHorizontal: FOOTER_PADDING,
       }}

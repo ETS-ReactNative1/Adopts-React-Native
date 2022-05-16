@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
-import React, { useState, useEffect } from "react";
-import { AsyncStorage } from "react-native";
+import React, { useState, useEffect, memo } from "react";
+import { AsyncStorage } from "@react-native-async-storage/async-storage";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { FilterContext } from "./contexts/FilterContext";
 import Main from "./screens/Main";
@@ -8,20 +8,24 @@ import Filters from "./screens/Filters";
 import Favorites from "./screens/Favorites";
 import UserSettings from "./screens/UserSettings";
 import SplashScreen from "./screens/Splash";
+import SetGender from "./screens/SetGender";
+import SetAge from "./screens/SetAge";
+import SetLocation from "./screens/SetLocation";
 import { Client } from "@petfinder/petfinder-js";
 import SetPreferences from "./screens/SetPreferences";
 import Onboarding from "./screens/Onboarding";
+import { AppLoading } from "expo";
 
 const Stack = createNativeStackNavigator();
 
-// const key = "p7rNFI2gUIoYHCWJMUUA5BAOoirnSfP30Dpny8c4ajQDtHPkyV";
-// const secret = "qAj2b76OKxznkKYP8RNfgpjJZxu3Kts8irMRf3qy";
-const key = "TzQe0DtZ8F1RkqwSU9LJlbZJVqZtmY5eGYXwXke4OeJWQyIRAD";
-const secret = "SxgQl0TYNDgtpglpBPGGmugrWFsz27ebjFWJmEVV";
+const key = "p7rNFI2gUIoYHCWJMUUA5BAOoirnSfP30Dpny8c4ajQDtHPkyV";
+const secret = "qAj2b76OKxznkKYP8RNfgpjJZxu3Kts8irMRf3qy";
+// const key = "TzQe0DtZ8F1RkqwSU9LJlbZJVqZtmY5eGYXwXke4OeJWQyIRAD";
+// const secret = "SxgQl0TYNDgtpglpBPGGmugrWFsz27ebjFWJmEVV";
 
 const client = new Client({ apiKey: key, secret: secret });
 
-export default function App() {
+function App() {
   const [loading, setLoading] = useState(true);
   const [initialLoad, setInitialLoad] = useState(null);
   const [firstLoad, setFirstLoad] = useState(true);
@@ -377,7 +381,8 @@ export default function App() {
     >
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Onboarding"
+          initialRouteName={onboarding ? "Onboarding" : "Main"}
+          // initialRouteName="Onboarding"
           screenOptions={{
             headerShown: false,
           }}
@@ -385,6 +390,9 @@ export default function App() {
           <Stack.Screen name="Splash" component={SplashScreen} />
           <Stack.Screen name="Onboarding" component={Onboarding} />
           <Stack.Screen name="Preferences" component={SetPreferences} />
+          <Stack.Screen name="SetGender" component={SetGender} />
+          <Stack.Screen name="SetAge" component={SetAge} />
+          <Stack.Screen name="SetLocation" component={SetLocation} />
           <Stack.Screen name="Main" component={Main} />
           <Stack.Screen name="Filters" component={Filters} />
           <Stack.Screen name="Favorites" component={Favorites} />
@@ -394,3 +402,5 @@ export default function App() {
     </FilterContext.Provider>
   );
 }
+
+export default memo(App);

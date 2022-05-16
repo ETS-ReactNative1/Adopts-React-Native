@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, memo } from "react";
 import { Text } from "react-native";
 import { StyleSheet, TouchableOpacity, SafeAreaView, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -7,7 +7,53 @@ import { Ionicons } from "@expo/vector-icons";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import { FilterContext } from "../contexts/FilterContext";
 
-export default function AltTopBar() {
+const styles = StyleSheet.create({
+  container: {
+    height: 75,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 15,
+    marginTop: getStatusBarHeight(),
+    backgroundColor: "white",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.12,
+    shadowRadius: 5.46,
+    elevation: 9,
+  },
+  darkMode: {
+    height: 75,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 15,
+    marginTop: getStatusBarHeight(),
+    backgroundColor: "transparent",
+    borderBottomColor: "white",
+    borderBottomWidth: 0.5,
+    borderTopColor: "white",
+    borderTopWidth: 0.5,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.12,
+    shadowRadius: 5.46,
+    elevation: 9,
+  },
+  name: {
+    fontSize: 35,
+    fontWeight: "900",
+    color: "dodgerblue",
+  },
+});
+
+function AltTopBar() {
   const { darkModeOn, onboarding } = useContext(FilterContext);
 
   const navigation = useNavigation();
@@ -96,7 +142,8 @@ export default function AltTopBar() {
           marginBottom: 5,
           fontWeight: "bold",
           fontSize: 18,
-          color: darkModeOn ? "white" : "gray",
+          fontFamily: "Futura",
+          color: darkModeOn ? "white" : "#006994",
         }}
       >
         {" "}
@@ -119,7 +166,7 @@ export default function AltTopBar() {
 
       <TouchableOpacity
         onPress={() => navigation.navigate("Favorites")}
-        style={{ marginLeft: 70 }}
+        style={{ marginLeft: 110 }}
       >
         <Feather
           name="heart"
@@ -128,7 +175,7 @@ export default function AltTopBar() {
         />
       </TouchableOpacity>
 
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={() => navigation.navigate("Filters")}
         style={{ paddingLeft: 15 }}
       >
@@ -138,13 +185,13 @@ export default function AltTopBar() {
           color={darkModeOn ? "lightskyblue" : "rgba(38, 64, 179, 0.842)"}
           style={{ bottom: 0 }}
         />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       <TouchableOpacity onPress={() => navigation.navigate("Main")}>
         <Ionicons
           name="home-outline"
           size={32}
-          color="#c471ed"
+          color="#006994"
           style={{ paddingLeft: 15 }}
         />
       </TouchableOpacity>
@@ -152,48 +199,4 @@ export default function AltTopBar() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    height: 75,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 15,
-    marginTop: getStatusBarHeight(),
-    backgroundColor: "white",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.12,
-    shadowRadius: 5.46,
-    elevation: 9,
-  },
-  darkMode: {
-    height: 75,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 15,
-    marginTop: getStatusBarHeight(),
-    backgroundColor: "#000",
-    borderBottomColor: "white",
-    borderBottomWidth: 0.5,
-    borderTopColor: "white",
-    borderTopWidth: 0.5,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.12,
-    shadowRadius: 5.46,
-    elevation: 9,
-  },
-  name: {
-    fontSize: 35,
-    fontWeight: "900",
-    color: "dodgerblue",
-  },
-});
+export default memo(AltTopBar);

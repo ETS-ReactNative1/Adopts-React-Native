@@ -9,7 +9,6 @@ import {
   Keyboard,
   Alert,
   ScrollView,
-  Image,
 } from "react-native";
 import { FilterContext } from "../contexts/FilterContext";
 import { Picker } from "@react-native-picker/picker";
@@ -41,12 +40,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   input: {
-    height: 40,
+    height: 50,
     width: 330,
     borderWidth: 1,
     marginLeft: 10,
     borderColor: "#006994",
     marginBottom: 20,
+    top: 80,
     borderRadius: 10,
     padding: 12,
     borderBottomLeftRadius: 0,
@@ -90,9 +90,9 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginBottom: 10,
     fontSize: 16,
+    alignSelf: "center",
     fontWeight: "bold",
     color: "#006994",
-    alignSelf: "center",
   },
   pickerText: {
     marginTop: 5,
@@ -113,22 +113,9 @@ const styles = StyleSheet.create({
     marginTop: 50,
     padding: 20,
   },
-  image: {
-    height: 200,
-    width: 200,
-    backgroundColor: "white",
-    borderRadius: 10,
-    top: 0,
-    marginTop: 40,
-    left: 0,
-    alignSelf: "center",
-    alignItems: "center",
-    justifyContent: "center",
-    resizeMode: "contain",
-  },
 });
 
-function SetPreferences({ navigation }) {
+function SetLocation({ navigation }) {
   const {
     darkModeOn,
     saveLocation,
@@ -162,17 +149,17 @@ function SetPreferences({ navigation }) {
     saveOnboarding,
   } = useContext(FilterContext);
 
-  const handleNext = () => {
-    saveAnimalType();
-    navigation.navigate("SetGender");
+  const handleSubmit = () => {
+    saveLocation();
+    setUpdateSettings(true);
+    setInitialLoad(false);
+    setOnboarding(false);
+    saveOnboarding();
+    fetchSavedAnimals();
+    navigation.replace("Main");
   };
-
-  console.log("Curr", savedAnimalType);
   return (
-    <View
-      style={darkModeOn ? styles.darkMode : styles.container}
-      onTouchStart={Keyboard.dismiss}
-    >
+    <View style={darkModeOn ? styles.darkMode : styles.container}>
       <View style={styles.form}>
         <Text
           style={{
@@ -184,51 +171,39 @@ function SetPreferences({ navigation }) {
         >
           Set your preferences
         </Text>
-        <Text
-          style={darkModeOn ? styles.darkModeAnimalTypeTop : styles.animalText}
-        >
-          Set default animal type
-        </Text>
-        <Picker
-          selectedValue={savedAnimalType}
-          onValueChange={(current) => setSavedAnimalType(current)}
-          style={darkModeOn ? styles.darkModePickerText : styles.pickerText}
-        >
-          <Picker.Item label="All" value="" />
-          <Picker.Item label="Dogs" value="Dog" />
-          <Picker.Item label="Cats" value="Cat" />
-          <Picker.Item label="Rabbits" value="Rabbit" />
-          <Picker.Item label="Birds" value="Bird" />
-        </Picker>
 
         <View>
-          {savedAnimalType === "Dog" ? (
-            <Image
-              source={require("../assets/Dog1.png")}
-              style={styles.image}
-            ></Image>
-          ) : savedAnimalType === "Cat" ? (
-            <Image
-              source={require("../assets/Cat1.png")}
-              style={styles.image}
-            ></Image>
-          ) : savedAnimalType === "Rabbit" ? (
-            <Image
-              source={require("../assets/Rabbit1.png")}
-              style={styles.image}
-            ></Image>
-          ) : savedAnimalType === "Bird" ? (
-            <Image
-              source={require("../assets/Bird1.png")}
-              style={styles.image}
-            ></Image>
-          ) : null}
+          <Text
+            style={{
+              marginTop: 20,
+              marginLeft: 10,
+              marginBottom: 30,
+              paddingTop: 20,
+              fontSize: 16,
+              fontWeight: "bold",
+              color: darkModeOn ? "lightskyblue" : "#006994",
+              borderTopWidth: 1,
+              borderTopColor: "white",
+              alignSelf: "center",
+            }}
+          >
+            Set default location
+          </Text>
+
+          <TextInput
+            style={darkModeOn ? styles.darkModeInput : styles.input}
+            name="location"
+            onChangeText={(text) => setLocation(text)}
+            placeholder="Zip Code"
+            placeholderTextColor={darkModeOn ? "white" : "#006994"}
+            autoFocus={true}
+          />
         </View>
 
-        <View style={{ marginVertical: 80 }}>
+        <View style={{ marginVertical: 170 }}>
           <Button
-            title="Next"
-            onPress={handleNext}
+            title="Save"
+            onPress={handleSubmit}
             style={{ fontSize: 20, color: "white" }}
             containerStyle={{
               padding: 10,
@@ -240,7 +215,7 @@ function SetPreferences({ navigation }) {
             }}
           >
             {" "}
-            Next
+            Save
           </Button>
         </View>
       </View>
@@ -248,4 +223,4 @@ function SetPreferences({ navigation }) {
   );
 }
 
-export default memo(SetPreferences);
+export default memo(SetLocation);

@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext, memo } from "react";
 import { StyleSheet, View, SafeAreaView, Text } from "react-native";
 import TopBar from "../components/TopBar";
 import BottomBar from "../components/BottomBar";
@@ -7,7 +7,71 @@ import { FilterContext } from "../contexts/FilterContext";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import Spinner from "react-native-loading-spinner-overlay";
 import { Feather, FontAwesome5 } from "@expo/vector-icons";
-export default function Main() {
+import { LinearGradient } from "expo-linear-gradient";
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "transparent",
+  },
+  darkMode: {
+    flex: 1,
+    marginTop: 0,
+    backgroundColor: "#121212",
+  },
+  swipes: {
+    flex: 1,
+    padding: 10,
+    paddingTop: 0,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+    elevation: 7,
+  },
+  noResults: {
+    marginLeft: 35,
+    marginTop: 260,
+    fontWeight: "500",
+    fontSize: 16,
+  },
+  darkModeNoResults: {
+    marginLeft: 35,
+    marginTop: 260,
+    fontWeight: "500",
+    fontSize: 16,
+    color: "white",
+  },
+  spinnerTextStyle: {
+    color: "#FFF",
+  },
+  location: {
+    top: 2,
+    right: 2,
+    fontWeight: "900",
+    fontSize: 14,
+    color: "#006994",
+    fontFamily: "Futura",
+  },
+  darkLocation: {
+    top: 2,
+    right: 2,
+    fontWeight: "900",
+    fontSize: 14,
+    color: "white",
+    fontFamily: "Futura",
+  },
+  animalType: {
+    top: 0,
+    right: 4,
+    paddingRight: 1,
+  },
+});
+
+function Main() {
   const {
     results,
     fetchAnimals,
@@ -50,7 +114,6 @@ export default function Main() {
       fetchSavedAnimals();
       loadDarkMode();
       loadFavorites();
-      loadLocation();
     }
     setUpdateSettings(false);
     console.log(animalType, breed, location, age, gender, firstLoad);
@@ -104,7 +167,10 @@ export default function Main() {
   }
 
   return (
-    <SafeAreaView style={darkModeOn ? styles.darkMode : styles.container}>
+    <LinearGradient
+      colors={darkModeOn ? ["#121212", "#121212"] : ["#F2E9EA", "white"]}
+      style={{ flex: 1 }}
+    >
       <TopBar />
       <View style={styles.swipes}>
         {loading === false && results.length > 1 && (
@@ -128,13 +194,13 @@ export default function Main() {
                   : "dove"
               }
               size={15}
-              color={darkModeOn ? "#c32aff" : "#c471ed"}
+              color={darkModeOn ? "#c32aff" : "#006994"}
               style={styles.animalType}
             />
             <Feather
               name="map-pin"
               size={14}
-              color={darkModeOn ? "lightskyblue" : "dodgerblue"}
+              color={darkModeOn ? "#006994" : "#006994"}
               style={{ paddingRight: 4 }}
             />
             <Text style={darkModeOn ? styles.darkLocation : styles.location}>
@@ -163,66 +229,8 @@ export default function Main() {
           <BottomBar results={results} currIndex={currIndex} />
         ) : null}
       </View>
-    </SafeAreaView>
+    </LinearGradient>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-  },
-  darkMode: {
-    flex: 1,
-    marginTop: 0,
-    backgroundColor: "#121212",
-  },
-  swipes: {
-    flex: 1,
-    padding: 10,
-    paddingTop: 8,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.29,
-    shadowRadius: 4.65,
-    elevation: 7,
-  },
-  noResults: {
-    marginLeft: 35,
-    marginTop: 260,
-    fontWeight: "500",
-    fontSize: 16,
-  },
-  darkModeNoResults: {
-    marginLeft: 35,
-    marginTop: 260,
-    fontWeight: "500",
-    fontSize: 16,
-    color: "white",
-  },
-  spinnerTextStyle: {
-    color: "#FFF",
-  },
-  location: {
-    top: 2,
-    right: 2,
-    fontWeight: "900",
-    fontSize: 14,
-    color: "black",
-  },
-  darkLocation: {
-    top: 2,
-    right: 2,
-    fontWeight: "900",
-    fontSize: 14,
-    color: "white",
-  },
-  animalType: {
-    top: 0,
-    right: 4,
-    paddingRight: 1,
-  },
-});
+export default memo(Main);

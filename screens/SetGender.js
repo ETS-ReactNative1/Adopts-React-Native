@@ -9,7 +9,6 @@ import {
   Keyboard,
   Alert,
   ScrollView,
-  Image,
 } from "react-native";
 import { FilterContext } from "../contexts/FilterContext";
 import { Picker } from "@react-native-picker/picker";
@@ -91,8 +90,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontSize: 16,
     fontWeight: "bold",
-    color: "#006994",
     alignSelf: "center",
+    color: "#006994",
   },
   pickerText: {
     marginTop: 5,
@@ -113,22 +112,9 @@ const styles = StyleSheet.create({
     marginTop: 50,
     padding: 20,
   },
-  image: {
-    height: 200,
-    width: 200,
-    backgroundColor: "white",
-    borderRadius: 10,
-    top: 0,
-    marginTop: 40,
-    left: 0,
-    alignSelf: "center",
-    alignItems: "center",
-    justifyContent: "center",
-    resizeMode: "contain",
-  },
 });
 
-function SetPreferences({ navigation }) {
+function SetGender({ navigation }) {
   const {
     darkModeOn,
     saveLocation,
@@ -163,16 +149,11 @@ function SetPreferences({ navigation }) {
   } = useContext(FilterContext);
 
   const handleNext = () => {
-    saveAnimalType();
-    navigation.navigate("SetGender");
+    saveGender();
+    navigation.navigate("SetAge");
   };
-
-  console.log("Curr", savedAnimalType);
   return (
-    <View
-      style={darkModeOn ? styles.darkMode : styles.container}
-      onTouchStart={Keyboard.dismiss}
-    >
+    <View style={darkModeOn ? styles.darkMode : styles.container}>
       <View style={styles.form}>
         <Text
           style={{
@@ -184,50 +165,25 @@ function SetPreferences({ navigation }) {
         >
           Set your preferences
         </Text>
+
         <Text
-          style={darkModeOn ? styles.darkModeAnimalTypeTop : styles.animalText}
+          style={darkModeOn ? styles.darkModeAnimalType : styles.animalText}
         >
-          Set default animal type
+          Set default gender
         </Text>
         <Picker
-          selectedValue={savedAnimalType}
-          onValueChange={(current) => setSavedAnimalType(current)}
+          selectedValue={savedGender}
+          onValueChange={(currentGender) => setSavedGender(currentGender)}
           style={darkModeOn ? styles.darkModePickerText : styles.pickerText}
         >
-          <Picker.Item label="All" value="" />
-          <Picker.Item label="Dogs" value="Dog" />
-          <Picker.Item label="Cats" value="Cat" />
-          <Picker.Item label="Rabbits" value="Rabbit" />
-          <Picker.Item label="Birds" value="Bird" />
+          <Picker.Item label="Any" value="" />
+          <Picker.Item label="Male" value="Male" />
+          <Picker.Item label="Female" value="Female" />
         </Picker>
 
-        <View>
-          {savedAnimalType === "Dog" ? (
-            <Image
-              source={require("../assets/Dog1.png")}
-              style={styles.image}
-            ></Image>
-          ) : savedAnimalType === "Cat" ? (
-            <Image
-              source={require("../assets/Cat1.png")}
-              style={styles.image}
-            ></Image>
-          ) : savedAnimalType === "Rabbit" ? (
-            <Image
-              source={require("../assets/Rabbit1.png")}
-              style={styles.image}
-            ></Image>
-          ) : savedAnimalType === "Bird" ? (
-            <Image
-              source={require("../assets/Bird1.png")}
-              style={styles.image}
-            ></Image>
-          ) : null}
-        </View>
-
-        <View style={{ marginVertical: 80 }}>
+        <View style={{ marginVertical: 170 }}>
           <Button
-            title="Next"
+            title="Save"
             onPress={handleNext}
             style={{ fontSize: 20, color: "white" }}
             containerStyle={{
@@ -248,4 +204,4 @@ function SetPreferences({ navigation }) {
   );
 }
 
-export default memo(SetPreferences);
+export default memo(SetGender);
