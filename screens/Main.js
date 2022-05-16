@@ -74,12 +74,7 @@ const styles = StyleSheet.create({
 function Main() {
   const {
     results,
-    fetchAnimals,
-    animalType,
     location,
-    age,
-    gender,
-    breed,
     loading,
     setLoading,
     currIndex,
@@ -90,35 +85,20 @@ function Main() {
     saveFavorites,
     loadFavorites,
     loadDarkMode,
-    loadAge,
-    loadLocation,
-    loadAnimalType,
     currType,
     setCurrType,
-    removeBreed,
-    setFirstLoad,
-    firstLoad,
     fetchSavedAnimals,
     updateSettings,
     setUpdateSettings,
-    initialLoad,
-    setInitialLoad,
-    onboarding,
-    setOnboarding,
-    saveOnboarding,
-    loadOnboarding,
   } = useContext(FilterContext);
 
   useEffect(() => {
-    if (firstLoad === true || updateSettings === true) {
+    if (updateSettings === true) {
       fetchSavedAnimals();
       loadDarkMode();
       loadFavorites();
     }
     setUpdateSettings(false);
-    console.log(animalType, breed, location, age, gender, firstLoad);
-    console.log("Onboarding", onboarding);
-    console.log("initalLoad", initialLoad);
   }, []);
 
   setTimeout(() => {
@@ -130,7 +110,6 @@ function Main() {
     if (!favorites.includes(id)) {
       saveFavorites([...favorites, results[currIndex]]);
       setFavorites([...favorites, results[currIndex]]);
-      setOnboarding(false);
     } else {
       alert(`You've already liked this animal`);
     }

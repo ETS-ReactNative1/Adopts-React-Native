@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import React, { useState, useEffect, memo } from "react";
-import { AsyncStorage } from "@react-native-async-storage/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { FilterContext } from "./contexts/FilterContext";
 import Main from "./screens/Main";
@@ -13,8 +13,7 @@ import SetAge from "./screens/SetAge";
 import SetLocation from "./screens/SetLocation";
 import { Client } from "@petfinder/petfinder-js";
 import SetPreferences from "./screens/SetPreferences";
-import Onboarding from "./screens/Onboarding";
-import { AppLoading } from "expo";
+import OnboardingScreen from "./screens/Onboarding";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,9 +26,7 @@ const client = new Client({ apiKey: key, secret: secret });
 
 function App() {
   const [loading, setLoading] = useState(true);
-  const [initialLoad, setInitialLoad] = useState(null);
-  const [firstLoad, setFirstLoad] = useState(true);
-  const [onboarding, setOnboarding] = useState(null);
+  const [isFirstLaunch, setIsFirstLaunch] = useState(null);
   const [updateSettings, setUpdateSettings] = useState(false);
   const [results, setResults] = useState([]);
   const [favorites, setFavorites] = useState([]);
@@ -47,8 +44,20 @@ function App() {
   const [savedBreed, setSavedBreed] = useState("");
   const [darkModeOn, setDarkModeOn] = useState(false);
 
+  const Onboarding = () => {
+    AsyncStorage.getItem("alreadyLaunched").then((value) => {
+      if (value === null) {
+        AsyncStorage.setItem("alreadyLaunched", "true");
+        setIsFirstLaunch(true);
+      } else {
+        setIsFirstLaunch(true);
+      }
+    });
+  };
+
   useEffect(() => {
-    if (firstLoad === true || updateSettings === true) {
+    Onboarding();
+    if (updateSettings === true) {
       removeBreed();
       removeAnimalType();
     } else {
@@ -83,8 +92,6 @@ function App() {
         }
         setLoading(true);
         setResults(filtered);
-        setFirstLoad(false);
-        setInitialLoad(false);
       })
       .catch(function (error) {
         console.log(error);
@@ -240,25 +247,25 @@ function App() {
     }
   };
 
-  const saveOnboarding = async () => {
-    try {
-      let value = onboarding === false ? "true" : "false";
-      await AsyncStorage.setItem("Onboarding", value);
-    } catch (err) {
-      alert(err);
-    }
-  };
+  // const saveOnboarding = async () => {
+  //   try {
+  //     let value = onboarding === false ? "false" : "true";
+  //     await AsyncStorage.setItem("Onboarding", value);
+  //   } catch (err) {
+  //     alert(err);
+  //   }
+  // };
 
-  const loadOnboarding = async () => {
-    try {
-      let onboard = await AsyncStorage.getItem("Onboarding");
-      let value = onboard === "false" ? false : true;
-      console.log("on", false);
-      setOnboarding(value);
-    } catch (err) {
-      alert(err);
-    }
-  };
+  // const loadOnboarding = async () => {
+  //   try {
+  //     let onboard = await AsyncStorage.getItem("Onboarding");
+  //     let value = onboard === "false" ? false : true;
+  //     console.log("on", false);
+  //     setOnboarding(value);
+  //   } catch (err) {
+  //     alert(err);
+  //   }
+  // };
 
   const saveLocation = async () => {
     try {
@@ -314,93 +321,160 @@ function App() {
     }
   };
 
-  return (
-    <FilterContext.Provider
-      value={{
-        fetchAnimals,
-        results,
-        animalType,
-        location,
-        age,
-        gender,
-        setAnimalType,
-        setLocation,
-        setAge,
-        setGender,
-        favorites,
-        setFavorites,
-        currIndex,
-        setCurrIndex,
-        breed,
-        setBreed,
-        darkModeOn,
-        setDarkModeOn,
-        saveFavorites,
-        loadFavorites,
-        removeFavorites,
-        saveDarkMode,
-        loadDarkMode,
-        loading,
-        setLoading,
-        saveLocation,
-        saveAge,
-        loadLocation,
-        loadAge,
-        removeDarkMode,
-        saveAnimalType,
-        loadAnimalType,
-        currType,
-        setCurrType,
-        saveGender,
-        loadGender,
-        saveBreed,
-        loadBreed,
-        removeBreed,
-        firstLoad,
-        setFirstLoad,
-        savedAnimalType,
-        setSavedAnimalType,
-        savedLocation,
-        setSavedLocation,
-        savedAge,
-        setSavedAge,
-        savedGender,
-        setSavedGender,
-        savedBreed,
-        setSavedBreed,
-        fetchSavedAnimals,
-        updateSettings,
-        setUpdateSettings,
-        initialLoad,
-        setInitialLoad,
-        onboarding,
-        setOnboarding,
-        saveOnboarding,
-        loadOnboarding,
-      }}
-    >
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName={onboarding ? "Onboarding" : "Main"}
-          // initialRouteName="Onboarding"
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          <Stack.Screen name="Splash" component={SplashScreen} />
-          <Stack.Screen name="Onboarding" component={Onboarding} />
-          <Stack.Screen name="Preferences" component={SetPreferences} />
-          <Stack.Screen name="SetGender" component={SetGender} />
-          <Stack.Screen name="SetAge" component={SetAge} />
-          <Stack.Screen name="SetLocation" component={SetLocation} />
-          <Stack.Screen name="Main" component={Main} />
-          <Stack.Screen name="Filters" component={Filters} />
-          <Stack.Screen name="Favorites" component={Favorites} />
-          <Stack.Screen name="UserSettings" component={UserSettings} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </FilterContext.Provider>
-  );
+  if (isFirstLaunch === null) {
+    return null;
+  } else if (isFirstLaunch === true) {
+    return (
+      <FilterContext.Provider
+        value={{
+          fetchAnimals,
+          results,
+          animalType,
+          location,
+          age,
+          gender,
+          setAnimalType,
+          setLocation,
+          setAge,
+          setGender,
+          favorites,
+          setFavorites,
+          currIndex,
+          setCurrIndex,
+          breed,
+          setBreed,
+          darkModeOn,
+          setDarkModeOn,
+          saveFavorites,
+          loadFavorites,
+          removeFavorites,
+          saveDarkMode,
+          loadDarkMode,
+          loading,
+          setLoading,
+          saveLocation,
+          saveAge,
+          loadLocation,
+          loadAge,
+          removeDarkMode,
+          saveAnimalType,
+          loadAnimalType,
+          currType,
+          setCurrType,
+          saveGender,
+          loadGender,
+          saveBreed,
+          loadBreed,
+          removeBreed,
+          savedAnimalType,
+          setSavedAnimalType,
+          savedLocation,
+          setSavedLocation,
+          savedAge,
+          setSavedAge,
+          savedGender,
+          setSavedGender,
+          savedBreed,
+          setSavedBreed,
+          fetchSavedAnimals,
+          updateSettings,
+          setUpdateSettings,
+          isFirstLaunch,
+          setIsFirstLaunch,
+        }}
+      >
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName={"Onboarding"}
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+            <Stack.Screen name="Preferences" component={SetPreferences} />
+            <Stack.Screen name="SetGender" component={SetGender} />
+            <Stack.Screen name="SetAge" component={SetAge} />
+            <Stack.Screen name="SetLocation" component={SetLocation} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </FilterContext.Provider>
+    );
+  } else {
+    return (
+      <FilterContext.Provider
+        value={{
+          fetchAnimals,
+          results,
+          animalType,
+          location,
+          age,
+          gender,
+          setAnimalType,
+          setLocation,
+          setAge,
+          setGender,
+          favorites,
+          setFavorites,
+          currIndex,
+          setCurrIndex,
+          breed,
+          setBreed,
+          darkModeOn,
+          setDarkModeOn,
+          saveFavorites,
+          loadFavorites,
+          removeFavorites,
+          saveDarkMode,
+          loadDarkMode,
+          loading,
+          setLoading,
+          saveLocation,
+          saveAge,
+          loadLocation,
+          loadAge,
+          removeDarkMode,
+          saveAnimalType,
+          loadAnimalType,
+          currType,
+          setCurrType,
+          saveGender,
+          loadGender,
+          saveBreed,
+          loadBreed,
+          removeBreed,
+          savedAnimalType,
+          setSavedAnimalType,
+          savedLocation,
+          setSavedLocation,
+          savedAge,
+          setSavedAge,
+          savedGender,
+          setSavedGender,
+          savedBreed,
+          setSavedBreed,
+          fetchSavedAnimals,
+          updateSettings,
+          setUpdateSettings,
+          isFirstLaunch,
+          setIsFirstLaunch,
+        }}
+      >
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName={"Main"}
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            <Stack.Screen name="Main" component={Main} />
+            <Stack.Screen name="Filters" component={Filters} />
+            <Stack.Screen name="Favorites" component={Favorites} />
+            <Stack.Screen name="UserSettings" component={UserSettings} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </FilterContext.Provider>
+    );
+  }
 }
 
 export default memo(App);

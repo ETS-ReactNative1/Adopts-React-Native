@@ -1,11 +1,10 @@
 import React, { useRef, memo } from "react";
-import { View, TouchableOpacity, Text, ActivityIndicator } from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 import ViewPager from "@react-native-community/viewpager";
 import { LinearGradient } from "expo-linear-gradient";
 import Page from "../components/Page";
-import Footer from "../components/Footer";
 
-const Onboarding = ({ navigation }) => {
+const OnboardingScreen = ({ navigation }) => {
   const pagerRef = useRef(null);
 
   const handlePageChange = (pageNumber) => {
@@ -31,7 +30,7 @@ const Onboarding = ({ navigation }) => {
                 justifyContent: "center",
                 position: "absolute",
                 alignSelf: "center",
-                fontWeight: "500",
+                fontWeight: "700",
               }}
             >
               Swipe or click to continue
@@ -229,4 +228,4 @@ const Onboarding = ({ navigation }) => {
   );
 };
 
-export default memo(Onboarding);
+export default memo(OnboardingScreen);

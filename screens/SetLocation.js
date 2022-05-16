@@ -119,42 +119,16 @@ function SetLocation({ navigation }) {
   const {
     darkModeOn,
     saveLocation,
-    saveAge,
-    age,
-    animalType,
-    setAnimalType,
-    setAge,
-    fetchAnimals,
-    saveAnimalType,
     setLocation,
-    gender,
-    setGender,
-    saveGender,
-    breed,
-    setBreed,
-    saveBreed,
-    setSavedAnimalType,
-    setSavedLocation,
-    setSavedAge,
-    setSavedGender,
-    setSavedBreed,
     fetchSavedAnimals,
     setUpdateSettings,
-    savedAnimalType,
-    savedBreed,
-    savedAge,
-    savedGender,
-    setInitialLoad,
-    setOnboarding,
-    saveOnboarding,
+    setIsFirstLaunch,
   } = useContext(FilterContext);
 
   const handleSubmit = () => {
     saveLocation();
+    setIsFirstLaunch(false);
     setUpdateSettings(true);
-    setInitialLoad(false);
-    setOnboarding(false);
-    saveOnboarding();
     fetchSavedAnimals();
     navigation.replace("Main");
   };
