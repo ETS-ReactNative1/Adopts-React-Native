@@ -1,11 +1,60 @@
-import React, { useContext } from "react";
-import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import React, { useContext, memo } from "react";
+import { View, StyleSheet, Image, TouchableOpacity, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { FilterContext } from "../contexts/FilterContext";
-import { getStatusBarHeight } from "react-native-status-bar-height";
+import { LinearGradient } from "expo-linear-gradient";
 
-export default function TopBar() {
+const styles = StyleSheet.create({
+  container: {
+    height: 75,
+    marginTop: 30,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 15,
+    backgroundColor: "transparent",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.12,
+    shadowRadius: 5.46,
+    elevation: 9,
+  },
+  darkMode: {
+    height: 75,
+    flexDirection: "row",
+    marginTop: 30,
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 15,
+    backgroundColor: "#121212",
+    borderBottomColor: "white",
+    borderBottomWidth: 0.5,
+    borderTopColor: "white",
+    borderTopWidth: 0.5,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.12,
+    shadowRadius: 5.46,
+    elevation: 9,
+  },
+  logo: {
+    height: 200,
+    width: 220,
+    top: 0,
+    marginLeft: 5,
+    resizeMode: "contain",
+    borderRadius: 60,
+  },
+});
+
+function TopBar() {
   const navigation = useNavigation();
 
   const { darkModeOn, onboarding } = useContext(FilterContext);
@@ -83,7 +132,12 @@ export default function TopBar() {
     elevation: 9,
   };
   return (
-    <View style={darkModeOn ? styles.darkMode : styles.container}>
+    <LinearGradient
+      colors={
+        darkModeOn ? ["#121212", "#121212"] : ["transparent", "transparent"]
+      }
+      style={darkModeOn ? styles.darkMode : styles.container}
+    >
       <TouchableOpacity>
         <Feather
           name="user"
@@ -93,13 +147,8 @@ export default function TopBar() {
           style={{ bottom: -2 }}
         />
       </TouchableOpacity>
-
       <Image
-        source={
-          darkModeOn
-            ? require("../assets/DarkModeLogo.png")
-            : require("../assets/AdoptsLogo.png")
-        }
+        source={require("../assets/Adopts.png")}
         style={styles.logo}
       ></Image>
 
@@ -114,7 +163,7 @@ export default function TopBar() {
           style={{ bottom: -5 }}
         />
       </TouchableOpacity>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={() => navigation.navigate("Filters")}
         style={{ left: 5 }}
       >
@@ -124,54 +173,9 @@ export default function TopBar() {
           color={darkModeOn ? "lightskyblue" : "rgba(38, 64, 179, 0.842)"}
           style={{ bottom: -5 }}
         />
-      </TouchableOpacity>
-    </View>
+      </TouchableOpacity> */}
+    </LinearGradient>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    height: 75,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 15,
-    marginTop: getStatusBarHeight(),
-    backgroundColor: "white",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.12,
-    shadowRadius: 5.46,
-    elevation: 9,
-  },
-  darkMode: {
-    height: 75,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 15,
-    marginTop: getStatusBarHeight(),
-    backgroundColor: "#000",
-    borderBottomColor: "white",
-    borderBottomWidth: 0.5,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.12,
-    shadowRadius: 5.46,
-    elevation: 9,
-  },
-  logo: {
-    height: 100,
-    width: 220,
-    marginLeft: 18,
-    bottom: 0,
-    resizeMode: "contain",
-    borderRadius: 60,
-  },
-});
+export default memo(TopBar);

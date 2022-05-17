@@ -1,55 +1,5 @@
-import React, { useEffect } from "react";
-import { View, Image, StyleSheet, Text } from "react-native";
-
-export default function Swipes({ results, willLike, willPass, setType }) {
-  const nameFilter = (name) => {
-    var str = name;
-    if (str.length > 10) {
-      str = str.substring(0, 18);
-    }
-
-    if (/\d/.test(str)) {
-      return "No name yet!";
-    }
-    return str;
-  };
-
-  useEffect(() => {
-    setType(results.type);
-  });
-
-  return (
-    <View style={styles.container}>
-      <Image source={{ uri: results.photos[0].full }} style={styles.photo} />
-      {willLike && (
-        <View style={styles.likeBox}>
-          <Text style={{ color: "#64EDCC" }}>LIKED!</Text>
-        </View>
-      )}
-
-      {willPass && (
-        <View style={styles.passBox}>
-          <Text style={{ color: "red" }}>NEXT</Text>
-        </View>
-      )}
-
-      <Text style={[styles.name, styles.textShadow]}>
-        {nameFilter(results.name)}
-      </Text>
-      <View style={{ position: "absolute" }}>
-        <Text
-          style={
-            results.gender === "Female"
-              ? [styles.female, styles.textShadow]
-              : [styles.male, styles.textShadow]
-          }
-        >
-          {results.gender}
-        </Text>
-      </View>
-    </View>
-  );
-}
+import React, { useEffect, memo } from "react";
+import { View, Image, StyleSheet, Text, ActivityIndicator } from "react-native";
 
 const boxStyle = {
   position: "absolute",
@@ -77,7 +27,7 @@ const styles = StyleSheet.create({
     borderColor: "red",
   },
   photo: {
-    height: "80%",
+    height: "88%",
     resizeMode: "cover",
     borderRadius: 60,
     borderBottomLeftRadius: 0,
@@ -92,6 +42,7 @@ const styles = StyleSheet.create({
     left: 15,
     bottom: 50,
     fontWeight: "bold",
+    fontFamily: "Futura",
   },
   age: {
     color: "white",
@@ -106,6 +57,7 @@ const styles = StyleSheet.create({
     top: 25,
     left: 265,
     fontWeight: "bold",
+    fontFamily: "Futura",
   },
   male: {
     color: "white",
@@ -113,11 +65,12 @@ const styles = StyleSheet.create({
     top: 25,
     left: 295,
     fontWeight: "bold",
+    fontFamily: "Futura",
   },
   textShadow: {
     textShadowColor: "rgba(0, 0, 0, 1)",
     textShadowOffset: { width: -1, height: 1 },
-    textShadowRadius: 10,
+    textShadowRadius: 5,
   },
   location: {
     top: 2,
@@ -138,3 +91,48 @@ const styles = StyleSheet.create({
     paddingRight: 1,
   },
 });
+
+function Swipes({ results, willLike, willPass, setType }) {
+  const nameFilter = (name) => {
+    var str = name;
+    if (str.length > 10) {
+      str = str.substring(0, 18);
+    }
+
+    if (/\d/.test(str)) {
+      return "No name yet!";
+    }
+    return str;
+  };
+
+  useEffect(() => {
+    setType(results.type);
+  }, []);
+
+  return (
+    <View style={styles.container}>
+      {results.photos[0].full ? (
+        <Image source={{ uri: results.photos[0].full }} style={styles.photo} />
+      ) : (
+        <ActivityIndicator size="large" />
+      )}
+
+      <Text style={[styles.name, styles.textShadow]}>
+        {nameFilter(results.name)}
+      </Text>
+      <View style={{ position: "absolute" }}>
+        <Text
+          style={
+            results.gender === "Female"
+              ? [styles.female, styles.textShadow]
+              : [styles.male, styles.textShadow]
+          }
+        >
+          {results.gender}
+        </Text>
+      </View>
+    </View>
+  );
+}
+
+export default memo(Swipes);

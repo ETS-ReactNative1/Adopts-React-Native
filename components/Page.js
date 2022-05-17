@@ -10,7 +10,7 @@ const Page = ({ backgroundColor, imageName, iconName, title, subtitle }) => {
       style={{
         flex: 1,
         justifyContent: "center",
-        marginTop: getStatusBarHeight(),
+        marginTop: 320,
         alignItems: "center",
         backgroundColor,
       }}
@@ -31,37 +31,41 @@ const Page = ({ backgroundColor, imageName, iconName, title, subtitle }) => {
         style={{
           width: 350,
           height: 350,
-          marginTop: 0,
+          marginTop: 100,
           alignItems: "center",
         }}
       />
       <View style={{ marginTop: 0 }}>
         <Text
           style={{
-            fontSize: 23,
+            fontSize: 24,
             fontWeight: "bold",
             color: "white",
             textShadowColor: "rgba(0, 0, 0, 0.25)",
             textShadowOffset: { width: -1, height: 1 },
             textShadowRadius: 10,
-            padding: 30,
+            padding: 25,
             textAlign: "center",
+            fontFamily: "Futura",
           }}
         >
           {title}
         </Text>
       </View>
-      <View style={{ marginTop: -25 }}>
+      <View
+        style={{ marginTop: 70, width: 350, height: 100, overflow: "visible" }}
+      >
         <Text
           style={{
             fontSize: 18,
-            fontWeight: "500",
+            fontWeight: "800",
             color: "white",
             padding: 15,
             textShadowColor: "rgba(0, 0, 0, 0.25)",
             textShadowOffset: { width: -1, height: 1 },
             textShadowRadius: 10,
             textAlign: "center",
+            fontFamily: "Futura",
           }}
         >
           {subtitle}
