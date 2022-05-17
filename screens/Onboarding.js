@@ -14,7 +14,7 @@ const OnboardingScreen = ({ navigation }) => {
   return (
     <View style={{ flex: 1 }}>
       <ViewPager style={{ flex: 1 }} initialPage={0} ref={pagerRef}>
-        <LinearGradient colors={["#16A7E0", "#006994"]}>
+        <LinearGradient colors={["#ff0dbf", "#006994"]}>
           <View key="1">
             <Page
               backgroundColor="transparent"
@@ -104,7 +104,7 @@ const OnboardingScreen = ({ navigation }) => {
             </View>
           </View>
         </LinearGradient>
-        <LinearGradient colors={["#c32aff", "#006994"]}>
+        <LinearGradient colors={["#ff0dbf", "#006994"]}>
           <View key="3">
             <Page
               backgroundColor="transparent"
@@ -144,7 +144,7 @@ const OnboardingScreen = ({ navigation }) => {
             </View>
           </View>
         </LinearGradient>
-        <LinearGradient colors={["#16A7E0", "#006994"]}>
+        <LinearGradient colors={["#ff0dbf", "#006994"]}>
           <View key="4">
             <Page
               backgroundColor="transparent"
@@ -184,7 +184,7 @@ const OnboardingScreen = ({ navigation }) => {
             </View>
           </View>
         </LinearGradient>
-        <LinearGradient colors={["#F2E9EA", "#006994"]}>
+        <LinearGradient colors={["#ff0dbf", "#006994"]}>
           <View key="5">
             <Page
               backgroundColor="transparent"

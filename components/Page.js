@@ -38,7 +38,7 @@ const Page = ({ backgroundColor, imageName, iconName, title, subtitle }) => {
       <View style={{ marginTop: 0 }}>
         <Text
           style={{
-            fontSize: 24,
+            fontSize: 21,
             fontWeight: "bold",
             color: "white",
             textShadowColor: "rgba(0, 0, 0, 0.25)",
