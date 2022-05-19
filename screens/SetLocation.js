@@ -1,4 +1,4 @@
-import React, { useContext, memo } from "react";
+import React, { useContext, memo, useState, useCallback } from "react";
 import {
   View,
   Text,
@@ -13,6 +13,7 @@ import {
 import { FilterContext } from "../contexts/FilterContext";
 import { Picker } from "@react-native-picker/picker";
 import Button from "react-native-button";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const styles = StyleSheet.create({
   container: {
@@ -122,12 +123,31 @@ function SetLocation({ navigation }) {
     setLocation,
     fetchSavedAnimals,
     setUpdateSettings,
-    setIsFirstLaunch,
+    setFirstLaunch,
   } = useContext(FilterContext);
 
+  const [zipCode, setZipCode] = useState(null);
+
+  const handleSetZip = useCallback(
+    (zip) => {
+      setZipCode(zip);
+      setLocation(zip);
+    },
+    [zipCode]
+  );
+
+  const saveOnboarding = async () => {
+    try {
+      await AsyncStorage.setItem("Onboarding", "false");
+      setFirstLaunch(false);
+    } catch (err) {
+      alert(err);
+    }
+  };
+
   const handleSubmit = () => {
+    saveOnboarding();
     saveLocation();
-    setIsFirstLaunch(false);
     setUpdateSettings(true);
     fetchSavedAnimals();
     navigation.replace("Main");
@@ -167,16 +187,17 @@ function SetLocation({ navigation }) {
           <TextInput
             style={darkModeOn ? styles.darkModeInput : styles.input}
             name="location"
-            onChangeText={(text) => setLocation(text)}
+            onChangeText={(text) => handleSetZip(text)}
             placeholder="Zip Code"
             placeholderTextColor={darkModeOn ? "white" : "#006994"}
-            autoFocus={true}
+            autoFocus
           />
         </View>
 
         <View style={{ marginVertical: 170 }}>
           <Button
             title="Save"
+            disabled={!zipCode}
             onPress={handleSubmit}
             style={{ fontSize: 20, color: "white" }}
             containerStyle={{

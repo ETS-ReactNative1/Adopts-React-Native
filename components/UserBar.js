@@ -137,11 +137,11 @@ function AltTopBar() {
     <View style={darkModeOn ? styles.darkMode : styles.container}>
       <Text
         style={{
-          marginLeft: 0,
+          flex: 1,
           marginTop: 10,
           marginBottom: 5,
           fontWeight: "bold",
-          fontSize: 18,
+          fontSize: 15,
           fontFamily: "Futura",
           color: darkModeOn ? "white" : "#006994",
         }}
@@ -155,7 +155,7 @@ function AltTopBar() {
         User Settings
       </Text>
 
-      <TouchableOpacity onPress={() => navigation.navigate("Main")}>
+      <TouchableOpacity onPress={() => navigation.navigate("Onboarding")}>
         <Ionicons
           name="home-outline"
           size={35}
@@ -187,7 +187,7 @@ function AltTopBar() {
         />
       </TouchableOpacity> */}
 
-      <TouchableOpacity onPress={() => navigation.navigate("Main")}>
+      <TouchableOpacity onPress={() => navigation.navigate("Onboarding")}>
         <Ionicons
           name="home-outline"
           size={32}

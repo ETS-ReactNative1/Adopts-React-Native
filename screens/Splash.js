@@ -1,15 +1,61 @@
-import React, { useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useEffect, useContext } from "react";
 import { View, Text, StyleSheet, ImageBackground, Image } from "react-native";
+import { FilterContext } from "../contexts/FilterContext";
 
 const SplashScreen = ({ navigation }) => {
-  setTimeout(() => {
-    navigation.navigate("Main");
-  }, 3500);
+  const {
+    fetchSavedAnimals,
+    loadDarkMode,
+    loadFavorites,
+    loadAnimalType,
+    loadAge,
+    loadLocation,
+    loadGender,
+    loadBreed,
+    setUpdateSettings,
+    firstLaunch,
+    setFirstLaunch,
+  } = useContext(FilterContext);
+
+  const loadOnboarding = async () => {
+    try {
+      let onboard = await AsyncStorage.getItem("Onboarding");
+      console.log("onBoard", onboard);
+      let value = onboard === "false" ? false : null;
+      setFirstLaunch(value);
+    } catch (err) {
+      alert(err);
+    }
+  };
+
+  console.log("onboarding", firstLaunch);
+
+  useEffect(() => {
+    try {
+      loadOnboarding();
+    } catch (err) {
+      console.log(err);
+    } finally {
+      loadAnimalType();
+      loadAge();
+      loadLocation();
+      loadGender();
+      loadBreed();
+      loadDarkMode();
+      loadFavorites();
+      setUpdateSettings(true);
+      fetchSavedAnimals();
+      setTimeout(() => {
+        navigation.navigate(firstLaunch === null ? "Onboarding" : "Main");
+      }, 3500);
+    }
+  }, []);
 
   return (
     <ImageBackground
       resizeMode="contain"
-      source={require("../assets/appstore2.png")}
+      source={require("../assets/Adopts.png")}
       style={{ width: "100%", height: "100%", alignItems: "center" }}
     >
       <View style={styles.container}>

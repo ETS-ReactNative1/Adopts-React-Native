@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     fontFamily: "Futura",
   },
   animalText: {
-    marginTop: 50,
+    marginTop: 20,
     marginLeft: 10,
     marginBottom: 10,
     fontSize: 16,
@@ -137,21 +137,11 @@ function UserSettings() {
     saveDarkMode,
     saveLocation,
     saveAge,
-    age,
-    animalType,
-    setAnimalType,
-    setAge,
-    fetchAnimals,
     saveAnimalType,
     setLocation,
-    gender,
-    setGender,
     saveGender,
-    breed,
-    setBreed,
     saveBreed,
     setSavedAnimalType,
-    setSavedLocation,
     setSavedAge,
     setSavedGender,
     setSavedBreed,
@@ -182,7 +172,7 @@ function UserSettings() {
     saveBreed();
     setUpdateSettings(true);
     fetchSavedAnimals();
-    navigation.navigate("Main");
+    navigation.navigate("Onboarding");
   };
 
   const dogBreeds = () => {
@@ -831,6 +821,30 @@ function UserSettings() {
           />
 
           <Text
+            style={{
+              marginTop: 40,
+              marginLeft: 10,
+              marginBottom: 10,
+              paddingTop: 20,
+              fontSize: 16,
+              fontWeight: "bold",
+              color: darkModeOn ? "#006994" : "#006994",
+              borderTopWidth: 1,
+              borderTopColor: "white",
+            }}
+          >
+            Location
+          </Text>
+
+          <TextInput
+            style={darkModeOn ? styles.darkModeInput : styles.input}
+            name="location"
+            onChangeText={(text) => setLocation(text)}
+            placeholder="Zip Code"
+            placeholderTextColor={darkModeOn ? "white" : "#006994"}
+          />
+
+          <Text
             style={
               darkModeOn ? styles.darkModeAnimalTypeTop : styles.animalText
             }
@@ -928,41 +942,21 @@ function UserSettings() {
             behavior={Platform === "Ios" ? "padding" : "height"}
           >
             <View>
-              <Text
-                style={{
-                  marginTop: 40,
-                  marginLeft: 10,
-                  marginBottom: 10,
-                  paddingTop: 20,
-                  fontSize: 16,
-                  fontWeight: "bold",
-                  color: darkModeOn ? "#006994" : "#006994",
-                  borderTopWidth: 1,
-                  borderTopColor: "white",
-                }}
-              >
-                Location
-              </Text>
-
-              <TextInput
-                style={darkModeOn ? styles.darkModeInput : styles.input}
-                name="location"
-                onChangeText={(text) => setLocation(text)}
-                placeholder="Zip Code"
-                placeholderTextColor={darkModeOn ? "white" : "#006994"}
-              />
-
-              <View style={{ marginVertical: 40 }}>
+              <View style={{ marginVertical: 50 }}>
                 <Button
                   title="Save"
                   onPress={handleSubmit}
-                  style={{ fontSize: 20, color: "white", fontFamily: "Futura" }}
+                  style={{
+                    fontSize: 20,
+                    color: darkModeOn ? "#006994" : "white",
+                    fontFamily: "Futura",
+                  }}
                   containerStyle={{
                     padding: 10,
                     height: 50,
                     borderRadius: 15,
                     overflow: "hidden",
-                    backgroundColor: darkModeOn ? "#006994" : "#006994",
+                    backgroundColor: darkModeOn ? "#1F1B24" : "#006994",
                   }}
                 >
                   {" "}

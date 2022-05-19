@@ -138,6 +138,7 @@ function AltTopBar() {
     <SafeAreaView style={darkModeOn ? styles.darkMode : styles.container}>
       <Text
         style={{
+          flex: 1,
           marginLeft: 20,
           marginTop: 10,
           marginBottom: 5,
@@ -151,7 +152,7 @@ function AltTopBar() {
         <FontAwesome name="heart" size={20} color="#ef32d9b2" /> Favorites
       </Text>
 
-      <TouchableOpacity onPress={() => navigation.navigate("Main")}>
+      <TouchableOpacity onPress={() => navigation.navigate("Onboarding")}>
         <Ionicons
           name="home-outline"
           size={35}
@@ -171,7 +172,7 @@ function AltTopBar() {
         />
       </TouchableOpacity> */}
 
-      <TouchableOpacity onPress={() => navigation.navigate("Main")}>
+      <TouchableOpacity onPress={() => navigation.navigate("Onboarding")}>
         <Ionicons
           name="home-outline"
           size={32}

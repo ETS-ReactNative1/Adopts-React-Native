@@ -1,13 +1,13 @@
-import React, { useEffect, useContext, memo } from "react";
-import { StyleSheet, View, SafeAreaView, Text } from "react-native";
+import React, { useEffect, useContext, memo, useState } from "react";
+import { StyleSheet, View, Text } from "react-native";
 import TopBar from "../components/TopBar";
 import BottomBar from "../components/BottomBar";
 import SwipeAction from "../components/SwipeAction";
 import { FilterContext } from "../contexts/FilterContext";
-import { getStatusBarHeight } from "react-native-status-bar-height";
 import Spinner from "react-native-loading-spinner-overlay";
 import { Feather, FontAwesome5 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { AdMobInterstitial } from "expo-ads-admob";
 
 const styles = StyleSheet.create({
   container: {
@@ -90,7 +90,10 @@ function Main() {
     fetchSavedAnimals,
     updateSettings,
     setUpdateSettings,
+    firstLaunch,
   } = useContext(FilterContext);
+
+  const [swipeCount, setSwipeCount] = useState(0);
 
   useEffect(() => {
     if (updateSettings === true) {
@@ -100,6 +103,8 @@ function Main() {
     }
     setUpdateSettings(false);
   }, []);
+
+  console.log("mainOnboarding", firstLaunch);
 
   setTimeout(() => {
     setLoading(false);
@@ -121,9 +126,18 @@ function Main() {
     nextAnimal();
   }
 
-  function nextAnimal() {
-    const nextIndex = results.length - 2 === currIndex ? 0 : currIndex + 1;
-    setCurrIndex(nextIndex);
+  async function nextAnimal() {
+    if (swipeCount < 9) {
+      const nextIndex = results.length - 2 === currIndex ? 0 : currIndex + 1;
+      setCurrIndex(nextIndex);
+      setSwipeCount(swipeCount + 1);
+      console.log("swipes", swipeCount);
+    } else {
+      setSwipeCount(0);
+      AdMobInterstitial.setAdUnitID("ca-app-pub-3940256099942544/4411468910");
+      await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: false });
+      await AdMobInterstitial.showAdAsync();
+    }
   }
 
   function displayAnimals() {

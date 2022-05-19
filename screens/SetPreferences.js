@@ -2,13 +2,10 @@ import React, { useContext, memo } from "react";
 import {
   View,
   Text,
-  TextInput,
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
   Keyboard,
-  Alert,
-  ScrollView,
   Image,
 } from "react-native";
 import { FilterContext } from "../contexts/FilterContext";
@@ -129,51 +126,20 @@ const styles = StyleSheet.create({
 });
 
 function SetPreferences({ navigation }) {
-  const {
-    darkModeOn,
-    saveLocation,
-    saveAge,
-    age,
-    animalType,
-    setAnimalType,
-    setAge,
-    fetchAnimals,
-    saveAnimalType,
-    setLocation,
-    gender,
-    setGender,
-    saveGender,
-    breed,
-    setBreed,
-    saveBreed,
-    setSavedAnimalType,
-    setSavedLocation,
-    setSavedAge,
-    setSavedGender,
-    setSavedBreed,
-    fetchSavedAnimals,
-    setUpdateSettings,
-    savedAnimalType,
-    savedBreed,
-    savedAge,
-    savedGender,
-    setInitialLoad,
-    setOnboarding,
-    saveOnboarding,
-  } = useContext(FilterContext);
+  const { darkModeOn, saveAnimalType, setSavedAnimalType, savedAnimalType } =
+    useContext(FilterContext);
 
   const handleNext = () => {
     saveAnimalType();
     navigation.navigate("SetGender");
   };
 
-  console.log("Curr", savedAnimalType);
   return (
     <View
       style={darkModeOn ? styles.darkMode : styles.container}
       onTouchStart={Keyboard.dismiss}
     >
-      <View style={styles.form}>
+      <View style={styles.form} onTouchStart={Keyboard.dismiss}>
         <Text
           style={{
             marginTop: 30,

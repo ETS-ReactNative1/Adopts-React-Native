@@ -1,12 +1,13 @@
-import React, { useRef, memo } from "react";
+import React, { useRef, memo, useContext, useEffect } from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import ViewPager from "@react-native-community/viewpager";
 import { LinearGradient } from "expo-linear-gradient";
 import Page from "../components/Page";
+import { FilterContext } from "../contexts/FilterContext";
 
 const OnboardingScreen = ({ navigation }) => {
   const pagerRef = useRef(null);
-
+  const { startOnboarding } = useContext(FilterContext);
   const handlePageChange = (pageNumber) => {
     pagerRef.current.setPage(pageNumber);
   };
